@@ -8,7 +8,10 @@ module.exports = {
       fontFamily: {
         "lobster": ["Lobster", "cursive"],
         "lobster-two": ["Lobster Two", "cursive"],
-      }
+      },
+      transitionProperty: {
+        'width': 'width'
+      },
     },
   },
   plugins: [],
