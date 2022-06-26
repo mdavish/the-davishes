@@ -16,6 +16,7 @@ import cx from "classnames";
 const HomePage: NextPage = () => {
   const ref = useRef<IParallax>();
   const [expanded, setExpanded] = useState(true);
+  const [selectedLayer, setSelectedLayer] = useState(0);
   return (
     <>
       <Head>
@@ -42,7 +43,7 @@ const HomePage: NextPage = () => {
                     className="mx-auto">
                     <div className="mx-auto">
                       <h3 className="font-serif text-white mb-2 text-xl lg:text-2xl">Scroll Down</h3>
-                      <FaChevronDown className="mt-4 mx-auto animate-bounce text-3xl text-white" />
+                      <FaChevronDown className="mt-4 mx-auto animate-bounce text-xl lg:text-3xl text-white" />
                     </div>
                   </FadeIn>
                 </div>
@@ -72,12 +73,12 @@ const HomePage: NextPage = () => {
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                   >
-                    <h1 className="text-2xl lg:text-5xl font-lobster-two">Welcome to our wedding website.</h1>
-                    <p className="font-serif text-xs lg:text-lg">Here you can find information about our wedding, RSVP, sign up for updates, and more!</p>
+                    <h1 className="text-2xl lg:text-5xl font-lobster-two">The Davishes</h1>
+                    <p className="font-serif text-sm lg:text-lg">Welcome to our wedding website.</p>
                     {
                       navItems.map((item, index) => (
                         <NavItem
-                          selected={false}
+                          selected={selectedLayer === index}
                           key={index}
                           number={index + 1}
                           label={item.title}
@@ -105,10 +106,11 @@ const HomePage: NextPage = () => {
                             key={index}
                             onClick={() => ref.current.scrollTo(index + 1)}
                             className={cx(
-                              "text-2xl my-auto text-gray-200 hover:text-white transition-colors"
+                              selectedLayer === index ? "text-white" : "text-gray-400",
+                              "text-2xl text-center my-auto hover:text-white transition-colors"
                             )}
                           >
-                            <BsDot />
+                            <BsDot className="" />
                           </button>
                         )
                       })
@@ -125,6 +127,7 @@ const HomePage: NextPage = () => {
                   title={item.title}
                   subtitle={item.subtitle}
                   expanded={expanded}
+                  onScreenEnter={() => setSelectedLayer(index)}
                 >
                 </Layer>
               )

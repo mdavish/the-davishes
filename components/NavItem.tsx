@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import cx from "classnames";
 
 interface NavItemProps {
   number: number;
@@ -13,10 +14,17 @@ const NavItem: React.FC<NavItemProps> = ({ number, label, onSelect, selected }) 
       onClick={onSelect}
       className="font-serif text-xs lg:text-lg text-left w-fit focus:outline-none"
     >
-      <div className="flex flex-row group gap-x-2 transition duration-300 tracking-widest">
-        <span className="text-neutral-200 group-hover:text-white transition">{number}</span>
-        <span className="hidden lg:block bg-white h-px w-6 group-hover:w-12 my-auto transition-width"></span>
-        <span className="text-neutral-200 group-hover:text-white transition">{label}</span>
+      <div className={cx(
+        "flex flex-row group gap-x-2 transition duration-300 tracking-widest",
+        selected ? "text-white" : "text-neutral-200 hover:text-white"
+      )}>
+        <span className="transition">{number}</span>
+        <span
+          className={cx(
+            selected ? "w-12" : "w-6 group-hover:w-12",
+            "hidden lg:block bg-white h-px my-auto transition-width"
+          )} />
+        <span className="transition">{label}</span>
       </div>
     </button>
   )
