@@ -9,6 +9,7 @@ interface Photo {
   src: string;
   title?: string;
   caption?: string;
+  date?: string;
 }
 
 interface PhotoGalleryProps {
@@ -16,13 +17,12 @@ interface PhotoGalleryProps {
 }
 
 const PhotoGallery: React.FC<PhotoGalleryProps> = ({ photos }) => {
-  const buttonClass = "my-auto text-xl hover:cursor-pointer";
+  const buttonClass = "my-auto text-xl hover:cursor-pointer disabled:text-gray-300";
   const [selectedIndex, setSelectedIndex] = useState(0);
   const selectedImage = photos[selectedIndex];
   return (
     <div className="flex flex-col gap-y-4">
       <h1 className="font-lobster-two text-2xl mx-auto">{selectedImage.title}</h1>
-      <p></p>
       <div className="w-full flex flex-row gap-x-4 overflow-x-scroll">
         <div className="mx-auto flex flex-row gap-x-4">
           <button
@@ -47,7 +47,15 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({ photos }) => {
           </button>
         </div>
       </div>
-    </div>
+      {
+        selectedImage.caption &&
+        <div className="w-2/3 mx-auto">
+          <p className="font-serif text-center text-base ">
+            {selectedImage.caption}
+          </p>
+        </div>
+      }
+    </div >
   )
 }
 

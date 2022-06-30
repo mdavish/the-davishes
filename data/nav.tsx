@@ -10,7 +10,7 @@ interface NavItem {
 export const navItems: NavItem[] = [
   {
     title: "Events",
-    subtitle: "We will be having three successive events from July 6th to July 8th. All guests are welcome at all events.",
+    subtitle: "Get ready for a jam-packed weekend! You're coming all to Portugal to celebrate with us so we want to make sure that your weekend is full of fun, food, and booze. We'll be hosting celebratory events from July 6th to July 8th. All guests are welcome!",
     children: <Events />,
   },
   {

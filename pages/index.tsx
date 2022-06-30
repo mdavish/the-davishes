@@ -23,122 +23,70 @@ const HomePage: NextPage = () => {
         <title>The Davishes</title>
         <meta name="description" content="The wedding website of Max Davish and Ashley Goldschmid." />
       </Head>
-      <div className="w-screen h-screen cool-bg grid">
-        <div className="w-full h-full">
-          <Image src="/lighthouse.jpg" className="object-none" alt="A picture of Portugal" layout="fill" />
-        </div>
-        <div className="absolute w-full h-full bg-slate-900/60 backdrop-blur-sm flex">
-          <Parallax
-            pages={6}
-            ref={ref}
-            config={config.gentle}
-          >
-            <ParallaxLayer offset={0} speed={1.5}>
-              <FadeIn delay={250} transitionDuration={1000} className="mx-auto mt-64 flex flex-col gap-y-8">
-                <h1 className="text-center text-amber-50 text-7xl lg:text-9xl font-lobster">The Davishes</h1>
-                <h2 className="font-lobster-two text-amber-50 w-full text-center text-5xl lg:text-6xl"> 7 . 8 . 23</h2>
-                <div className="flex flex-row">
-                  <FadeIn
-                    delay={500}
-                    className="mx-auto">
-                    <div className="mx-auto">
-                      <h3 className="font-serif text-white mb-2 text-xl lg:text-2xl">Scroll Down</h3>
-                      <FaChevronDown className="mt-4 mx-auto animate-bounce text-xl lg:text-3xl text-white" />
-                    </div>
-                  </FadeIn>
-                </div>
-              </FadeIn>
-            </ParallaxLayer>
-            <ParallaxLayer
-              offset={1}
-            // sticky={{ start: 1, end: 6 }}
-            >
-              <div className="mx-auto my-auto text-white h-full flex w-full lg:w-2/3">
-                <div className="mt-36 w-2/5 py-4 px-2">
-                  <button
-                    onClick={() => setExpanded(!expanded)}
-                    className={cx(
-                      "ml-0.5 mx-auto mb-4 text-neutral-200 hover:text-white transition duration-150 text-lg lg:text-xl",
-                      expanded && "rotate-180"
-                    )}
-                  >
-                    <BsFillArrowLeftCircleFill />
-                  </button>
-                  <Transition
-                    as="div"
-                    className="flex flex-col gap-y-4 overflow-hidden transition-width"
-                    show={expanded}
-                    enter="transition-opacity duration-75"
-                    enterFrom="opacity-0"
-                    enterTo="opacity-100"
-                    leave="transition-opacity duration-150"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                  >
-                    <h1 className="text-2xl lg:text-5xl font-lobster-two">The Davishes</h1>
-                    <p className="font-serif text-sm lg:text-lg">Welcome to our wedding website.</p>
-                    {
-                      navItems.map((item, index) => (
-                        <NavItem
-                          selected={selectedLayer === index}
-                          key={index}
-                          number={index + 1}
-                          label={item.title}
-                          onSelect={() => ref.current.scrollTo(index + 1)}
-                        />
-                      )
-                      )
-                    }
-                  </Transition>
-                  <Transition
-                    as="div"
-                    className="flex flex-col gap-y-2 w-fit"
-                    show={!expanded}
-                    enter="transition-opacity duration-75"
-                    enterFrom="opacity-0"
-                    enterTo="opacity-100"
-                    leave="transition-opacity duration-150"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                  >
-                    {
-                      navItems.map((item, index) => {
-                        return (
-                          <button
-                            key={index}
-                            onClick={() => ref.current.scrollTo(index + 1)}
-                            className={cx(
-                              selectedLayer === index ? "text-white" : "text-gray-400",
-                              "text-2xl text-center my-auto hover:text-white transition-colors"
-                            )}
-                          >
-                            <BsDot className="" />
-                          </button>
-                        )
-                      })
-                    }
-                  </Transition>
-                </div>
-              </div>
-            </ParallaxLayer>
-            {
-              navItems.map((item, index) => (
-                <Layer
-                  key={index}
-                  offset={index + 1}
-                  title={item.title}
-                  subtitle={item.subtitle}
-                  expanded={expanded}
-                  onScreenEnter={() => setSelectedLayer(index)}
-                >
-                  {item.children && item.children}
-                </Layer>
-              )
-              )
-            }
-          </Parallax>
-        </div>
+      <div className="absolute h-14 z-50 top-0 flex flex-row w-full">
+        <FadeIn className="w-full" delay={1750} transitionDuration={1000}>
+          <div className="bg-white/5 mx-auto flex flex-row gap-x-8 border-b border-gray-300 backdrop-blur-md">
+            <div className="py-4 mx-auto flex flex-row gap-x-8 text-white font-serif">
+              {
+                navItems.map((item, index) => {
+                  return (
+                    <NavItem
+                      selected={selectedLayer === index}
+                      onSelect={() => ref.current.scrollTo(index + 1)}
+                      key={index}
+                      label={item.title}
+                    />
+                  )
+                })
+              }
+            </div>
+          </div>
+        </FadeIn>
       </div>
+      <Parallax ref={ref} pages={navItems.length + 2} className="bg-gray-900">
+        <ParallaxLayer offset={0} speed={0.3}>
+          <>
+            <div className="absolute w-full h-full">
+              <Image src="/lighthouse.jpg" className="object-none" alt="A picture of Portugal" layout="fill" />
+            </div>
+            <div className="absolute z-10 w-full h-full bg-slate-900/60 backdrop-blur-sm">
+            </div>
+          </>
+        </ParallaxLayer>
+        <ParallaxLayer offset={0} speed={1}>
+          <FadeIn delay={250} transitionDuration={1000} className="mx-auto mt-64 flex flex-col gap-y-8">
+            <div className="flex flex-col gap-y-8">
+              <h1 className="text-center text-amber-50 text-7xl lg:text-9xl font-lobster">The Davishes</h1>
+              <h2 className="font-lobster-two text-amber-50 w-full text-center text-5xl lg:text-6xl"> 7 . 8 . 23</h2>
+              <div className="flex flex-row">
+                <FadeIn
+                  delay={500}
+                  className="mx-auto">
+                  <div className="mx-auto">
+                    {/* <h3 className="font-serif text-white mb-2 text-xl lg:text-2xl">Scroll Down</h3> */}
+                    <FaChevronDown className="mt-4 mx-auto animate-bounce text-xl lg:text-3xl text-white" />
+                  </div>
+                </FadeIn>
+              </div>
+            </div>
+          </FadeIn>
+        </ParallaxLayer>
+        {
+          navItems.map((item, index) => (
+            <Layer
+              key={index}
+              offset={index + 1}
+              title={item.title}
+              subtitle={item.subtitle}
+              expanded={expanded}
+              onScreenEnter={() => setSelectedLayer(index)}
+            >
+              {item.children && item.children}
+            </Layer>
+          )
+          )
+        }
+      </Parallax>
     </>
   )
 }

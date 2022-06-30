@@ -13,17 +13,17 @@ const Events: React.FC<EventsProps> = (props) => {
           {
             src: "/palacio.jpeg",
             title: "Welcome Drinks",
-            caption: "Welcome drinks will be held at Palacio Estoril on July 7th 2023.",
+            caption: "We'll kick off the wedding weekend with welcome drinks and Portugeuse barbeque at Palacio Estoril on Thursday July 6th 2023"
           },
           {
             title: "Rehearsal Dinner",
             src: "/moltemar.jpeg",
-            caption: "The Rehearsal Dinner will be held at Monte Mar in Lisbon on July 7th 2023. All guests are welcome!",
+            caption: "We're venturing into Lisboa for the Rehearsal Dinner at Monte Mar, situated in the beautiful Port of Lisbon, on July 7th 2023.",
           },
           {
             title: "Wedding",
             src: "/villa.jpeg",
-            caption: "The Wedding will be held at Villa Italia Gran Real on July 8th 2023.",
+            caption: "Ashley and Max will tie the knot at Grand Real Villa Italia on July 8th 2023. More details on itinerary to come...",
           },
         ]} />
     </div>
