@@ -25,9 +25,9 @@ const HomePage: NextPage = () => {
       </Head>
       <div className="w-screen h-screen cool-bg grid">
         <div className="w-full h-full">
-          <Image src="/portugal.jpg" alt="A picture of Portugal" layout="fill" />
+          <Image src="/lighthouse.jpg" className="object-none" alt="A picture of Portugal" layout="fill" />
         </div>
-        <div className="absolute w-full h-full bg-green-900/60 backdrop-blur-sm flex">
+        <div className="absolute w-full h-full bg-slate-900/60 backdrop-blur-sm flex">
           <Parallax
             pages={6}
             ref={ref}
@@ -50,7 +50,9 @@ const HomePage: NextPage = () => {
               </FadeIn>
             </ParallaxLayer>
             <ParallaxLayer
-              sticky={{ start: 1, end: 6 }}>
+              offset={1}
+            // sticky={{ start: 1, end: 6 }}
+            >
               <div className="mx-auto my-auto text-white h-full flex w-full lg:w-2/3">
                 <div className="mt-36 w-2/5 py-4 px-2">
                   <button
@@ -129,6 +131,7 @@ const HomePage: NextPage = () => {
                   expanded={expanded}
                   onScreenEnter={() => setSelectedLayer(index)}
                 >
+                  {item.children && item.children}
                 </Layer>
               )
               )

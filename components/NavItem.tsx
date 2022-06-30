@@ -18,7 +18,6 @@ const NavItem: React.FC<NavItemProps> = ({ number, label, onSelect, selected }) 
         "flex flex-row group gap-x-2 transition duration-300 tracking-widest",
         selected ? "text-white" : "text-neutral-200 hover:text-white"
       )}>
-        <span className="transition">{number}</span>
         <span
           className={cx(
             selected ? "w-12" : "w-6 group-hover:w-12",

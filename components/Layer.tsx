@@ -21,7 +21,6 @@ const Layer: React.FC<LayerProps> = ({
 }) => {
 
   const ref = useRef<HTMLDivElement>();
-
   const [onScreen, setOnScreen] = useState(false);
 
   useLayoutEffect(() => {
@@ -49,10 +48,10 @@ const Layer: React.FC<LayerProps> = ({
       <div className="text-white mx-auto my-auto text-green h-full flex flex-col w-full lg:w-2/3">
         <div className={cx(
           expanded ? "w-3/5" : "w-[89%]",
-          "transition-width bg-green-900/50 h-2/3 border-white border-y border-l lg:border backdrop-blur-sm rounded-l-xl lg:rounded-xl ml-auto my-auto p-4 lg:p-8 flex flex-col gap-y-2 lg:gap-y-4"
+          "transition-width bg-gray-900 h-2/3 border-y border-l lg:border border-gray-700 rounded-l-xl lg:rounded-xl ml-auto my-auto p-4 lg:p-8 flex flex-col gap-y-2 lg:gap-y-4"
         )}>
           <h3 ref={ref} className="text-2xl lg:text-5xl font-lobster-two">
-            {`${offset}. ${title}`}
+            {title}
           </h3>
           <p className="text-sm lg:text-lg font-serif">
             {subtitle}
