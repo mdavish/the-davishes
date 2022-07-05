@@ -5,9 +5,14 @@ interface NavItem {
   title: string;
   subtitle: string;
   children?: ReactNode;
+  imgSrc?: string;
 }
 
 export const navItems: NavItem[] = [
+  {
+    title: "Our Story",
+    subtitle: "Here is our story.",
+  },
   {
     title: "Events",
     subtitle: "Get ready for a jam-packed weekend! You're coming all to Portugal to celebrate with us so we want to make sure that your weekend is full of fun, food, and booze. We'll be hosting celebratory events from July 6th to July 8th. All guests are welcome!",

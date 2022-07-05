@@ -1,5 +1,6 @@
 import React, { useLayoutEffect, useState, useRef } from 'react';
 import { ParallaxLayer } from "@react-spring/parallax";
+import Image from "next/image";
 import cx from "classnames";
 
 interface LayerProps {
@@ -9,6 +10,10 @@ interface LayerProps {
   children: React.ReactNode;
   expanded: boolean;
   onScreenEnter?: () => void;
+  imgSrc?: string;
+  imgAlt?: string;
+  bgColor?: string;
+  direction: "left" | "right"
 }
 
 const Layer: React.FC<LayerProps> = ({
@@ -18,6 +23,10 @@ const Layer: React.FC<LayerProps> = ({
   expanded,
   children,
   onScreenEnter,
+  imgSrc = "/lighthouse.jpg",
+  imgAlt = "A picture of Portugal",
+  bgColor = "bg-gray-900",
+  direction = "left"
 }) => {
 
   const ref = useRef<HTMLDivElement>();
@@ -45,7 +54,28 @@ const Layer: React.FC<LayerProps> = ({
 
   return (
     <ParallaxLayer offset={offset} speed={0.5}>
-      <div className="text-center text-white mx-auto my-auto text-green h-full flex flex-col w-full lg:w-1/2">
+      <div className={cx(
+        direction === "left" && "flex-col-reverse lg:flex-row-reverse",
+        "text-white h-full w-full flex flex-col lg:flex-row")}>
+        <div className={cx(bgColor, "h-2/5 lg:w-2/5 lg:h-full grid w-full ")}>
+          <div className="p-10 mx-auto my-auto flex flex-col gap-y-8">
+            <h1 ref={ref} className="text-center text-white font-lobster-two text-5xl">{title}</h1>
+            <p className="text-center font-serif text-white">
+              {subtitle}
+            </p>
+            {children}
+          </div>
+        </div>
+        <div className="h-3/5 lg:w-3/5 lg:h-full relative">
+          <Image
+            objectFit="cover"
+            src="/family.jpeg"
+            alt="The family"
+            layout="fill"
+          />
+        </div>
+      </div>
+      {/* <div className="text-center text-white mx-auto my-auto text-green h-full flex flex-col w-full lg:w-1/2">
         <div className={cx(
           expanded ? "w-full" : "w-[89%]",
           "transition-width  h-3/4 border-y  rounded-l-xl lg:rounded-xl ml-auto my-auto p-4 lg:p-8 flex flex-col gap-y-2 lg:gap-y-4"
@@ -58,7 +88,7 @@ const Layer: React.FC<LayerProps> = ({
           </p>
           {children}
         </div>
-      </div>
+      </div> */}
     </ParallaxLayer>
   )
 }

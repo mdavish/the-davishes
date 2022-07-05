@@ -25,8 +25,8 @@ const HomePage: NextPage = () => {
       </Head>
       <div className="absolute h-14 z-50 top-0 flex flex-row w-full">
         <FadeIn className="w-full" delay={1750} transitionDuration={1000}>
-          <div className="bg-white/5 mx-auto flex flex-row gap-x-8 border-b border-gray-300 backdrop-blur-md">
-            <div className="py-4 mx-auto flex flex-row gap-x-8 text-white font-serif">
+          <div className="bg-white/5 mx-auto flex flex-row gap-y-4 border-b border-gray-300 backdrop-blur-md">
+            <div className="py-4 mx-auto flex flex-row gap-x-4 lg:gap-x-8 text-white font-serif">
               {
                 navItems.map((item, index) => {
                   return (
@@ -47,7 +47,16 @@ const HomePage: NextPage = () => {
         <ParallaxLayer offset={0} speed={0.3}>
           <>
             <div className="absolute w-full h-full">
-              <Image src="/lighthouse.jpg" className="object-none" alt="A picture of Portugal" layout="fill" />
+              <Image
+                priority
+                objectFit="cover"
+                src="/lighthouse.jpg"
+                className="object-none"
+                alt="A picture of Portugal"
+                layout="fill"
+                placeholder="blur"
+                blurDataURL="/lighthouse_small.jpeg"
+              />
             </div>
             <div className="absolute z-10 w-full h-full bg-slate-900/60 backdrop-blur-sm">
             </div>
@@ -74,12 +83,14 @@ const HomePage: NextPage = () => {
         {
           navItems.map((item, index) => (
             <Layer
+              direction={index % 2 === 0 ? "left" : "right"}
               key={index}
               offset={index + 1}
               title={item.title}
               subtitle={item.subtitle}
               expanded={expanded}
               onScreenEnter={() => setSelectedLayer(index)}
+              imgSrc={item.imgSrc}
             >
               {item.children && item.children}
             </Layer>
