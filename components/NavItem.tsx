@@ -15,16 +15,10 @@ const NavItem: React.FC<NavItemProps> = ({ number, label, onSelect, selected }) 
       className="font-serif text-xs lg:text-lg text-left w-fit focus:outline-none"
     >
       <div className={cx(
-        "flex flex-row group gap-x-2 transition duration-300 tracking-widest",
+        "flex flex-row group gap-x-1 transition duration-300 tracking-widest",
         selected ? "text-white" : "text-neutral-300 hover:text-white"
       )}>
-        {/* <span
-          className={cx(
-            selected ? "w-12" : "w-6 group-hover:w-12",
-            "hidden lg:block bg-white h-px my-auto transition-width"
-          )}
-        /> */}
-        <span className="transition">{label}</span>
+        <span className="text-center transition">{label}</span>
       </div>
     </button>
   )

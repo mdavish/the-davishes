@@ -2,16 +2,22 @@ import React, { useLayoutEffect, useState, useRef } from 'react';
 import { ParallaxLayer } from "@react-spring/parallax";
 import Image from "next/image";
 import cx from "classnames";
+import PhotoGallery from "./PhotoGallery";
 
-interface LayerProps {
+export interface LayerProps {
   offset: number;
   title?: string;
-  subtitle: string;
+  subtitle: string | React.ReactNode;
   children: React.ReactNode;
   expanded: boolean;
   onScreenEnter?: () => void;
   imgSrc?: string;
   imgAlt?: string;
+  images?: {
+    src: string;
+    alt?: string;
+    caption?: string;
+  }[],
   bgColor?: string;
   direction: "left" | "right"
 }
@@ -20,13 +26,13 @@ const Layer: React.FC<LayerProps> = ({
   offset,
   title,
   subtitle,
-  expanded,
   children,
   onScreenEnter,
   imgSrc = "/lighthouse.jpg",
   imgAlt = "A picture of Portugal",
   bgColor = "bg-gray-900",
-  direction = "left"
+  direction = "left",
+  images = [],
 }) => {
 
   const ref = useRef<HTMLDivElement>();
@@ -52,43 +58,51 @@ const Layer: React.FC<LayerProps> = ({
     };
   }, [])
 
+  if (!imgSrc && !images.length) {
+    return (
+      <div>
+        This a real small layer
+      </div>
+    )
+  }
+
   return (
     <ParallaxLayer offset={offset} speed={0.5}>
       <div className={cx(
-        direction === "left" && "flex-col-reverse lg:flex-row-reverse",
-        "text-white h-full w-full flex flex-col lg:flex-row")}>
+        direction === "left" && "lg:flex-row-reverse",
+        "text-white h-full w-full flex flex-col-reverse lg:flex-row")}>
         <div className={cx(bgColor, "h-2/5 lg:w-2/5 lg:h-full grid w-full ")}>
           <div className="p-10 mx-auto my-auto flex flex-col gap-y-8">
-            <h1 ref={ref} className="text-center text-white font-lobster-two text-5xl">{title}</h1>
-            <p className="text-center font-serif text-white">
-              {subtitle}
-            </p>
+            <h1
+              ref={ref}
+              className="text-center text-white font-lobster-two text-4xl lg:text-6xl">
+              {title}
+            </h1>
+            {typeof (subtitle) === "string" ?
+              <p className="text-center font-serif text-white">
+                {subtitle}
+              </p> : subtitle
+            }
             {children}
           </div>
         </div>
-        <div className="h-3/5 lg:w-3/5 lg:h-full relative">
-          <Image
-            objectFit="cover"
-            src="/family.jpeg"
-            alt="The family"
-            layout="fill"
-          />
-        </div>
+        {images.length === 0 &&
+          <div className="h-3/5 lg:w-3/5 lg:h-3/4 my-auto relative mx-4">
+            <Image
+              className="rounded-2xl"
+              objectFit="cover"
+              src={imgSrc ?? "/family.jpeg"}
+              alt="The family"
+              layout="fill"
+            />
+          </div>}
+        {(images?.length > 0) &&
+          <div className="h-3/5 lg:w-3/5 lg:h-3/4 my-auto relative mx-4">
+            <PhotoGallery
+              photos={images.map(({ src, caption, alt }) => ({ src, caption }))}
+            />
+          </div>}
       </div>
-      {/* <div className="text-center text-white mx-auto my-auto text-green h-full flex flex-col w-full lg:w-1/2">
-        <div className={cx(
-          expanded ? "w-full" : "w-[89%]",
-          "transition-width  h-3/4 border-y  rounded-l-xl lg:rounded-xl ml-auto my-auto p-4 lg:p-8 flex flex-col gap-y-2 lg:gap-y-4"
-        )}>
-          <h3 ref={ref} className="text-2xl lg:text-5xl font-lobster-two">
-            {title}
-          </h3>
-          <p className="text-sm lg:text-lg font-serif">
-            {subtitle}
-          </p>
-          {children}
-        </div>
-      </div> */}
     </ParallaxLayer>
   )
 }

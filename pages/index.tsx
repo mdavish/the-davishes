@@ -5,13 +5,9 @@ import FadeIn from "react-fade-in";
 import Head from "next/head";
 import { FaChevronDown } from "react-icons/fa/";
 import { IParallax, Parallax, ParallaxLayer } from "@react-spring/parallax";
-import { config } from "react-spring";
 import NavItem from "../components/NavItem";
 import Layer from "../components/Layer";
 import { navItems } from "../data/nav";
-import { BsFillArrowLeftCircleFill, BsDot } from "react-icons/bs";
-import { Transition } from "@headlessui/react";
-import cx from "classnames";
 
 const HomePage: NextPage = () => {
   const ref = useRef<IParallax>();
@@ -25,7 +21,7 @@ const HomePage: NextPage = () => {
       </Head>
       <div className="absolute h-14 z-50 top-0 flex flex-row w-full">
         <FadeIn className="w-full" delay={1750} transitionDuration={1000}>
-          <div className="bg-white/5 mx-auto flex flex-row gap-y-4 border-b border-gray-300 backdrop-blur-md">
+          <div className="bg-gray-900/30 mx-auto flex flex-row gap-y-4 border-b border-gray-300 backdrop-blur-md">
             <div className="py-4 mx-auto flex flex-row gap-x-4 lg:gap-x-8 text-white font-serif">
               {
                 navItems.map((item, index) => {
@@ -91,6 +87,7 @@ const HomePage: NextPage = () => {
               expanded={expanded}
               onScreenEnter={() => setSelectedLayer(index)}
               imgSrc={item.imgSrc}
+              images={item.images}
             >
               {item.children && item.children}
             </Layer>
