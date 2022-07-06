@@ -72,7 +72,7 @@ const Layer: React.FC<LayerProps> = ({
         direction === "left" && "lg:flex-row-reverse",
         "text-white h-full w-full flex flex-col-reverse lg:flex-row")}>
         <div className={cx(bgColor, "h-2/5 lg:w-2/5 lg:h-full grid w-full ")}>
-          <div className="p-10 mx-auto my-auto flex flex-col gap-y-8">
+          <div className="p-10 mx-auto my-auto flex flex-col gap-y-5 lg:gap-y-8">
             <h1
               ref={ref}
               className="text-center text-white font-lobster-two text-4xl lg:text-6xl">

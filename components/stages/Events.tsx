@@ -32,7 +32,7 @@ const events: Event[] = [
 
 const Events: React.FC = () => {
   return (
-    <div className="flex flex-col gap-y-6 font-serif">
+    <div className="flex flex-col gap-y-3 lg:gap-y-6 font-serif">
       {
         events.map((event, index) => (
           <div className="text-center mx-auto"

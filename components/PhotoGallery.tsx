@@ -17,7 +17,7 @@ interface PhotoGalleryProps {
 }
 
 const PhotoGallery: React.FC<PhotoGalleryProps> = ({ photos }) => {
-  const buttonClass = "my-auto text-xl hover:cursor-pointer disabled:text-gray-300";
+  const buttonClass = "my-auto text-xl hover:cursor-pointer disabled:text-gray-500";
   const [selectedIndex, setSelectedIndex] = useState(0);
   const selectedImage = photos[selectedIndex];
   return (
