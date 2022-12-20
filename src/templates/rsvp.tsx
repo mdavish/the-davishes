@@ -6,7 +6,7 @@ import RSVPForm from "../components/RSVPForm";
 import "../index.css";
 
 export const getPath: GetPath<TemplateRenderProps> = () => {
-  return "rsvp.html"
+  return "rsvp"
 };
 
 const headless = provideHeadless({
