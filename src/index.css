@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add a solid underline to the anchor tags */
+
+/* Initial state of the underline - hide it and set the width to 0 */
+a::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 2px;
+  background-color: currentColor;
+  transition: width 0.3s ease-in-out;
+}
+
+/* Show and animate the underline on hover */
+a:hover::after {
+  width: 100%;
+}
