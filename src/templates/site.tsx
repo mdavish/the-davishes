@@ -42,7 +42,7 @@ export const transformProps: TransformProps<TemplateProps> = async (data) => {
 };
 
 export const getPath: GetPath<TemplateProps> = () => {
-  return "website.html"
+  return "index.html"
 };
 
 export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = () => ({
