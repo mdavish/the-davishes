@@ -14,7 +14,10 @@ import { Parallax, ParallaxLayer, IParallax } from "@react-spring/parallax";
 import Layout from "../components/Layout";
 import "../index.css";
 import ContentBlockComp from "../components/ContentBlock";
-
+import { Disclosure, Transition } from "@headlessui/react";
+import Block from "../components/Block";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import cx from "classnames";
 
 export const config: TemplateConfig = {
   stream: {
@@ -26,6 +29,8 @@ export const config: TemplateConfig = {
       "c_contentBlocks.c_content",
       "c_contentBlocks.c_dominantPhoto",
       "c_contentBlocks.c_secondaryPhoto",
+      "c_faqs.name",
+      "c_faqs.answer",
     ],
     filter: {
       entityTypes: ["ce_site"]
@@ -52,13 +57,13 @@ export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = () => ({
 });
 
 const SiteTemplate = (props: TemplateRenderProps) => {
+  console.log(props.document);
   const site = siteSchema.parse(props.document);
   const nBlocks = site.c_contentBlocks?.length ?? 0;
   const parallaxRef = useRef<IParallax>(null);
-
   return (
     <Layout>
-      <Parallax pages={nBlocks + 1} ref={parallaxRef} >
+      <Parallax pages={nBlocks + 2} ref={parallaxRef} >
         <ParallaxLayer >
           <div
             className="flex flex-col justify-center h-full">
@@ -88,6 +93,62 @@ const SiteTemplate = (props: TemplateRenderProps) => {
           )
           )
         }
+        <Block i={nBlocks}>
+          <div className="flex flex-col h-full">
+            <h1 className="mt-36 text-5xl text-center text-green-1100 font-lobster my-4"
+            >
+              Frequently Asked Questions
+            </h1>
+            <div className="flex flex-col gap-y-4 w-full lg:w-3/5 mx-auto">
+              {
+                site.c_faqs.map((faq, i) => (
+                  <div key={i} className="flex flex-col">
+                    {/* A series of collapse/expandable FAQs */}
+                    {/* Each of them uses the Disclosure component from @headlessui/react */}
+                    <Disclosure>
+                      {({ open }) => (
+                        <>
+                          <Disclosure.Button
+                            className={cx(
+                              open && "bg-green-1100/5",
+                              "flex justify-between w-full px-4 py-2 text-sm font-medium text-left hover:bg-green-1100/5 rounded-lg transition-colors ease-in  text-green-1100"
+                            )}
+                          >
+                            <span>{faq.name}</span>
+                            <svg
+                              className={`${open ? 'transform rotate-180' : ''} w-5 h-5 text-green-1100`}
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                              aria-hidden="true"
+                            >
+                              <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                            </svg>
+                          </Disclosure.Button>
+                          <Transition
+                            enter="transition ease-out duration-250"
+                            enterFrom="transform opacity-0 scale-95"
+                            enterTo="transform opacity-100 scale-100"
+                            leave="transition ease-in duration-150"
+                            leaveFrom="transform opacity-100 scale-100"
+                            leaveTo="transform opacity-0 scale-95"
+
+                          >
+                            <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-green-1100">
+                              <ReactMarkdown className="prose-sm">
+                                {faq.answer}
+                              </ReactMarkdown>
+                            </Disclosure.Panel>
+                          </Transition>
+                        </>
+                      )}
+                    </Disclosure>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </Block>
       </Parallax>
     </Layout>
   );

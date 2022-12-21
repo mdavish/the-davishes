@@ -54,7 +54,7 @@ const ContentBlockComp = (props: ContentBlockProps): JSX.Element => {
             }
           </div>
           <div className="p-8">
-            <h1 className="text-green-1100 text-4xl tracking-wider font-lobsterTwo mb-6">
+            <h1 className="text-green-1100 text-5xl font-lobster mb-6">
               {block.name}
             </h1>
             <p className="text-sm text-stone-800 lg:leading-7">

@@ -15,10 +15,16 @@ export const contentBlockSchema = z.object({
   c_secondaryPhoto: z.optional(photoSchema),
 });
 
+export const faqSchema = z.object({
+  name: z.string(),
+  answer: z.string(),
+});
+
 export const siteSchema = z.object({
   name: z.string(),
   c_dominantPhoto: photoSchema,
   c_contentBlocks: z.optional(z.array(contentBlockSchema)),
+  c_faqs: z.array(faqSchema),
 });
 
 export const weddingGuest = z.object({
