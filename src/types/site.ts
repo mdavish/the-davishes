@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const photoSchema = z.object({
-  alternateText: z.string(),
+  alternateText: z.string().optional(),
   url: z.string(),
   height: z.number(),
   width: z.number(),
@@ -23,7 +23,8 @@ export const faqSchema = z.object({
 export const siteSchema = z.object({
   name: z.string(),
   c_dominantPhoto: photoSchema,
-  c_contentBlocks: z.optional(z.array(contentBlockSchema)),
+  c_ourStoryCopy: z.string(),
+  c_ourStoryPhoto: photoSchema,
   c_faqs: z.array(faqSchema),
 });
 

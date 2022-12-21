@@ -13,11 +13,12 @@ import { IoChevronDownCircle } from "react-icons/io5";
 import { Parallax, ParallaxLayer, IParallax } from "@react-spring/parallax";
 import Layout from "../components/Layout";
 import "../index.css";
-import ContentBlockComp from "../components/ContentBlock";
+import { Image } from "@yext/pages/components";
 import { Disclosure, Transition } from "@headlessui/react";
 import Block from "../components/Block";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import cx from "classnames";
+// import Tilt from 'react-parallax-tilt';
 
 export const config: TemplateConfig = {
   stream: {
@@ -25,10 +26,9 @@ export const config: TemplateConfig = {
     fields: [
       "name",
       "c_dominantPhoto",
+      "c_ourStoryCopy",
+      "c_ourStoryPhoto",
       "c_contentBlocks.name",
-      "c_contentBlocks.c_content",
-      "c_contentBlocks.c_dominantPhoto",
-      "c_contentBlocks.c_secondaryPhoto",
       "c_faqs.name",
       "c_faqs.answer",
     ],
@@ -59,11 +59,10 @@ export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = () => ({
 const SiteTemplate = (props: TemplateRenderProps) => {
   console.log(props.document);
   const site = siteSchema.parse(props.document);
-  const nBlocks = site.c_contentBlocks?.length ?? 0;
   const parallaxRef = useRef<IParallax>(null);
   return (
     <Layout>
-      <Parallax pages={nBlocks + 2} ref={parallaxRef} >
+      <Parallax pages={3} ref={parallaxRef} >
         <ParallaxLayer >
           <div
             className="flex flex-col justify-center h-full">
@@ -83,17 +82,25 @@ const SiteTemplate = (props: TemplateRenderProps) => {
             </FadeIn>
           </div>
         </ParallaxLayer>
-        {
-          site.c_contentBlocks?.map((block, i) => (
-            <ContentBlockComp
-              key={i}
-              block={block}
-              i={i}
-            />
-          )
-          )
-        }
-        <Block i={nBlocks}>
+        <Block i={0}>
+          <div className="h-full flex lg:flex-row flex-col gap-y-2 align-middle">
+            <div className="shrink-0 aspect-auto my-auto relative">
+              <Image
+                className="mx-auto h-96 w-96 object-cover"
+                image={site.c_ourStoryPhoto}
+              />
+            </div>
+            <div className="p-8 my-auto">
+              <h1 className="text-green-1100 text-5xl font-lobster mb-6">
+                Our Story
+              </h1>
+              <p className="text-sm text-stone-800 lg:leading-7">
+                {site.c_ourStoryCopy}
+              </p>
+            </div>
+          </div>
+        </Block>
+        <Block i={1}>
           <div className="flex flex-col h-full">
             <h1 className="mt-36 text-5xl text-center text-green-1100 font-lobster my-4"
             >
