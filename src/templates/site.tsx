@@ -17,7 +17,7 @@ import { Image } from "@yext/pages/components";
 import { Disclosure, Transition } from "@headlessui/react";
 import Block from "../components/Block";
 import cx from "classnames";
-import ReactMarkdown from "react-markdown";
+// import ReactMarkdown from "react-markdown";
 
 export const config: TemplateConfig = {
   stream: {
@@ -141,9 +141,9 @@ const SiteTemplate = (props: TemplateRenderProps) => {
 
                           >
                             <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-green-1100">
-                              <ReactMarkdown className="prose-sm list-disc list-outside">
-                                {faq.answer}
-                              </ReactMarkdown>
+                              {/* <ReactMarkdown className="prose-sm list-disc list-outside"> */}
+                              {faq.answer}
+                              {/* </ReactMarkdown> */}
                             </Disclosure.Panel>
                           </Transition>
                         </>
