@@ -18,7 +18,6 @@ import { Disclosure, Transition } from "@headlessui/react";
 import Block from "../components/Block";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import cx from "classnames";
-// import Tilt from 'react-parallax-tilt';
 
 export const config: TemplateConfig = {
   stream: {
