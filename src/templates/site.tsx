@@ -16,8 +16,8 @@ import "../index.css";
 import { Image } from "@yext/pages/components";
 import { Disclosure, Transition } from "@headlessui/react";
 import Block from "../components/Block";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import cx from "classnames";
+import ReactMarkdown from "react-markdown";
 
 export const config: TemplateConfig = {
   stream: {
@@ -27,7 +27,6 @@ export const config: TemplateConfig = {
       "c_dominantPhoto",
       "c_ourStoryCopy",
       "c_ourStoryPhoto",
-      "c_contentBlocks.name",
       "c_faqs.name",
       "c_faqs.answer",
     ],
@@ -56,12 +55,13 @@ export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = () => ({
 });
 
 const SiteTemplate = (props: TemplateRenderProps) => {
+  console.log("SiteTemplate");
   console.log(props.document);
   const site = siteSchema.parse(props.document);
   const parallaxRef = useRef<IParallax>(null);
   return (
     <Layout>
-      <Parallax pages={3} ref={parallaxRef} >
+      <Parallax pages={3.5} ref={parallaxRef} >
         <ParallaxLayer >
           <div
             className="flex flex-col justify-center h-full">
@@ -141,7 +141,7 @@ const SiteTemplate = (props: TemplateRenderProps) => {
 
                           >
                             <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-green-1100">
-                              <ReactMarkdown className="prose-sm">
+                              <ReactMarkdown className="prose-sm list-disc list-outside">
                                 {faq.answer}
                               </ReactMarkdown>
                             </Disclosure.Panel>
@@ -158,7 +158,7 @@ const SiteTemplate = (props: TemplateRenderProps) => {
       </Parallax>
     </Layout>
   );
-}
+};
 
 
 export default SiteTemplate;
