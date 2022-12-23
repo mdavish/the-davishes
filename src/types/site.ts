@@ -20,12 +20,35 @@ export const faqSchema = z.object({
   answer: z.string(),
 });
 
+export const locationSchema = z.object({
+  name: z.string(),
+  address: z.object({
+    line1: z.string(),
+    line2: z.optional(z.string()),
+    city: z.string(),
+    region: z.string().optional(),
+    postalCode: z.string(),
+  }),
+});
+
+export const eventSchema = z.object({
+  name: z.string(),
+  c_eventPhoto: photoSchema.optional(),
+  description: z.string(),
+  time: z.object({
+    start: z.coerce.date(),
+    end: z.coerce.date(),
+  }),
+  c_eventLocation: z.array(locationSchema).min(0).max(1),
+});
+
 export const siteSchema = z.object({
   name: z.string(),
   c_dominantPhoto: photoSchema,
   c_ourStoryCopy: z.string(),
   c_ourStoryPhoto: photoSchema,
   c_faqs: z.array(faqSchema),
+  c_itinerary: z.array(eventSchema),
 });
 
 export const weddingGuest = z.object({

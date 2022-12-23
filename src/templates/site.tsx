@@ -5,18 +5,22 @@ import {
   TemplateProps,
   TemplateRenderProps,
   GetPath,
-  GetHeadConfig
+  GetHeadConfig,
 } from "@yext/pages/*";
-import { siteSchema } from "../types/site";
+import { getRuntime } from "@yext/pages/util";
+import { Site, siteSchema } from "../types/site";
 import FadeIn from "react-fade-in";
-import { IoChevronDownCircle } from "react-icons/io5";
+import { IoChevronDownCircle, IoCalendarOutline, IoLocationOutline } from "react-icons/io5";
 import { Parallax, ParallaxLayer, IParallax } from "@react-spring/parallax";
 import Layout from "../components/Layout";
+import Header from "../components/Header";
+import P from "../components/P";
 import "../index.css";
-import { Image } from "@yext/pages/components";
+import { Image, Link } from "@yext/pages/components";
 import { Disclosure, Transition } from "@headlessui/react";
 import Block from "../components/Block";
 import cx from "classnames";
+import Tilt from 'react-parallax-tilt';
 // import ReactMarkdown from "react-markdown";
 
 export const config: TemplateConfig = {
@@ -29,6 +33,13 @@ export const config: TemplateConfig = {
       "c_ourStoryPhoto",
       "c_faqs.name",
       "c_faqs.answer",
+      "c_itinerary.name",
+      "c_itinerary.description",
+      "c_itinerary.c_eventPhoto",
+      "c_itinerary.time",
+      "c_itinerary.c_recommendedAttire",
+      "c_itinerary.c_eventLocation.name",
+      "c_itinerary.c_eventLocation.address",
     ],
     filter: {
       entityTypes: ["ce_site"]
@@ -55,13 +66,23 @@ export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = () => ({
 });
 
 const SiteTemplate = (props: TemplateRenderProps) => {
-  console.log("SiteTemplate");
+
   console.log(props.document);
-  const site = siteSchema.parse(props.document);
+  let site: Site;
+  try {
+    site = siteSchema.parse(props.document);
+  } catch (e) {
+    console.log("Error parsing site document: ")
+    console.log({
+      document: props.document,
+      error: e
+    })
+    throw e;
+  }
   const parallaxRef = useRef<IParallax>(null);
   return (
     <Layout>
-      <Parallax pages={3.5} ref={parallaxRef} >
+      <Parallax pages={4.5} ref={parallaxRef} >
         <ParallaxLayer >
           <div
             className="flex flex-col justify-center h-full">
@@ -84,33 +105,101 @@ const SiteTemplate = (props: TemplateRenderProps) => {
         <Block i={0}>
           <div className="h-full flex lg:flex-row flex-col gap-y-2 align-middle">
             <div className="shrink-0 aspect-auto my-auto relative">
-              <Image
-                className="mx-auto h-96 w-96 object-cover"
-                image={site.c_ourStoryPhoto}
-              />
+              <Tilt
+                glareEnable
+                glareMaxOpacity={0.4}
+                tiltMaxAngleX={5}
+                tiltMaxAngleY={5}
+              >
+                <Image
+                  className="mx-auto h-96 w-96 object-cover rounded-md"
+                  image={site.c_ourStoryPhoto}
+                />
+              </Tilt>
             </div>
             <div className="p-8 my-auto">
-              <h1 className="text-green-1100 text-5xl font-lobster mb-6">
+              <Header>
                 Our Story
-              </h1>
-              <p className="text-sm text-stone-800 lg:leading-7">
+              </Header>
+              <P>
                 {site.c_ourStoryCopy}
-              </p>
+              </P>
             </div>
           </div>
         </Block>
         <Block i={1}>
+          <Header className="text-center">
+            Itinerary
+          </Header>
+          <div className="flex flex-col gap-y-10">
+            {
+              site.c_itinerary.map((event, i) => {
+                const eventLocation = event.c_eventLocation[0];
+                return (
+                  <div key={i} className="flex flex-col lg:flex-row gap-y-4 lg:gap-y-0 gap-x-4">
+                    {/* <div className="shrink-0 aspect-auto">
+                    {event.c_eventPhoto &&
+                      <Image
+                        className="h-48 w-48 object-cover my-auto"
+                        image={event.c_eventPhoto}
+                      />}
+                  </div> */}
+                    <div className="flex flex-row gap-x-10">
+                      <Header className="my-auto">
+                        {i + 1}
+                      </Header>
+                      <div className="flex flex-col gap-y-2">
+                        <h3 className="text-2xl font-medium text-green-1100 font-lobsterTwo">
+                          {event.name}
+                        </h3>
+                        <div className="text-sm text-green-1100 flex flex-row align-baseline">
+                          <Link
+                            href={`https://calendar.google.com/calendar/r/eventedit?text=${event.name}&dates=${event.time.start.toISOString().replace(/[-:]/g, "")}/${event.time.end.toISOString().replace(/[-:]/g, "")}&details=${event.description}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <IoCalendarOutline className="inline-block mr-2 mb-1 text-green-1100" />
+                            {event.time.start.toLocaleString("en-US", {
+                              // Config matches this format: "July 8, 2023, 5:00 PM"
+                              month: "long",
+                              day: "numeric",
+                              year: "numeric",
+                              hour: "numeric",
+                              minute: "numeric",
+                            })}
+                          </Link>
+                        </div>
+                        {/* We show a similar looking link for the location */}
+                        <div className="text-sm text-green-1100 flex flex-row align-baseline">
+                          <Link
+                            href={`https://www.google.com/maps/search/`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <IoLocationOutline className="inline-block mr-2 mb-1 text-green-1100" />
+                            {eventLocation?.name ?? "TBD"}
+                          </Link>
+                        </div>
+                        <P>
+                          {event.description}
+                        </P>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })
+            }
+          </div>
+        </Block>
+        <Block i={2}>
           <div className="flex flex-col h-full">
-            <h1 className="mt-36 text-5xl text-center text-green-1100 font-lobster my-4"
-            >
+            <Header className="text-center">
               Frequently Asked Questions
-            </h1>
+            </Header>
             <div className="flex flex-col gap-y-4 w-full lg:w-3/5 mx-auto">
               {
                 site.c_faqs.map((faq, i) => (
                   <div key={i} className="flex flex-col">
-                    {/* A series of collapse/expandable FAQs */}
-                    {/* Each of them uses the Disclosure component from @headlessui/react */}
                     <Disclosure>
                       {({ open }) => (
                         <>
@@ -141,9 +230,12 @@ const SiteTemplate = (props: TemplateRenderProps) => {
 
                           >
                             <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-green-1100">
-                              {/* <ReactMarkdown className="prose-sm list-disc list-outside"> */}
                               {faq.answer}
-                              {/* </ReactMarkdown> */}
+                              {/* Weird hack due to `document` being undefined */}
+                              {/* {ReactMarkdown &&
+                                <ReactMarkdown className="prose-sm list-disc list-outside">
+                                  {faq.answer}
+                                </ReactMarkdown>} */}
                             </Disclosure.Panel>
                           </Transition>
                         </>
