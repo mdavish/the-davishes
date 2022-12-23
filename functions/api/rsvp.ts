@@ -66,16 +66,14 @@ const apiRequestSchema = z.object({
 export type APIRequest = z.infer<typeof apiRequestSchema>;
 
 export type APIResponse = {
-  body: object;
+  body: string;
   statusCode: number;
   headers: {
     "Content-Type": "application/json";
   };
 };
 
-export async function handleApiRequest(
-  apiRequest: APIRequest
-): Promise<APIResponse> {
+export async function main(apiRequest: APIRequest): Promise<APIResponse> {
   let parsedRequest: APIRequest;
   await setTimeout(() => {
     console.log("waiting so that Deno doesn't yell at me");
@@ -87,10 +85,10 @@ export async function handleApiRequest(
       headers: {
         "Content-Type": "application/json",
       },
-      body: {
+      body: JSON.stringify({
         message: "Something went wrong in the zod parsing of your request.",
         error: e,
-      },
+      }),
       statusCode: 500,
     };
   }
@@ -99,27 +97,21 @@ export async function handleApiRequest(
       headers: {
         "Content-Type": "application/json",
       },
-      body: {
+      body: JSON.stringify({
         message: "No body found!",
-      },
+      }),
       statusCode: 400,
     };
   }
   const parsedBody = JSON.parse(parsedRequest.body);
   return {
-    body: {
+    body: JSON.stringify({
       message: "Hello World! The request has been successful.",
       parsedBody: parsedBody,
-    },
+    }),
     statusCode: 200,
     headers: {
       "Content-Type": "application/json",
     },
   };
-}
-
-export async function main(apiRequest: APIRequest): Promise<string> {
-  // Let's see if this works?
-  const response = await handleApiRequest(apiRequest);
-  return JSON.stringify(response);
 }
