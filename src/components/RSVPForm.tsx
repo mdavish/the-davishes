@@ -35,8 +35,12 @@ const RSVPForm = () => {
 
 
   const [selectedGuest, setSelectedGuest] = useState<WeddingGuest | undefined>(undefined);
+  // This is for loading the person's data
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  // This is for submitting the form
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const { register, handleSubmit } = useForm({
     defaultValues: {
@@ -54,11 +58,18 @@ const RSVPForm = () => {
     note: z.string().optional(),
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     console.log(data);
     const parsedData = formSchema.parse(data);
     console.log(parsedData);
+    // 2 second timeout
+    await setTimeout(() => {
+      setSubmitting(true);
+    }, 2000);
+    setSubmitting(false);
+    setSubmitted(true);
     window.alert("RSVP submitted! Thank you for your response. :)");
+    // window.alert("RSVP submitted! Thank you for your response. :)");
   };
 
   const searchActions = useSearchActions();
@@ -79,8 +90,8 @@ const RSVPForm = () => {
           <FilterSearch
             placeholder="Search for your name..."
             customCssClasses={{
-              filterSearchContainer: "w-96 my-0",
-
+              filterSearchContainer: "w-96 my-0 shadow-sm",
+              inputElement: "px-3 py-3",
             }}
             sectioned={false}
             searchFields={[
@@ -125,10 +136,15 @@ const RSVPForm = () => {
             (!loading && selectedGuest) &&
             <div>
               <div className="my-6">
-                <p className="text-center text-lg font-bold text-green-1100">
-                  Welcome {selectedGuest.name}!
-                </p>
-                <p className="text-center text-green-1100">
+                {/* There is a horizontal line on either side of the paragraph */}
+                <div className="flex flex-row justify-center items-center gap-x-4">
+                  <div className="w-1/5 h-[2px] bg-green-1100"></div>
+                  <p className="text-center text-xl font-bold text-green-1100 font-lobsterTwo">
+                    Welcome {selectedGuest.name}!
+                  </p>
+                  <div className="w-1/5 h-[2px] bg-green-1100"></div>
+                </div>
+                <p className="text-sm text-green-1100 text-center">
                   Please confirm your information below.
                 </p>
               </div>
@@ -148,7 +164,7 @@ const RSVPForm = () => {
                       autoComplete="email"
                       placeholder="you@example.com"
                       required
-                      className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                      className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-0 sm:text-sm"
                     />
                   </div>
                 </div>
@@ -165,7 +181,7 @@ const RSVPForm = () => {
                       autoComplete="tel"
                       placeholder="1234567890"
                       required
-                      className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                      className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-0 sm:text-sm"
                     />
                   </div>
                 </div>
@@ -179,7 +195,7 @@ const RSVPForm = () => {
                       id="note"
                       name="note"
                       placeholder="Any special requests?"
-                      className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                      className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-0 sm:text-sm"
                     />
                   </div>
                 </div>
@@ -191,11 +207,12 @@ const RSVPForm = () => {
                       <div className="flex items-center">
                         <input
                           {...register("attending")}
+                          required
                           id="attending"
                           name="attending"
                           type="radio"
                           value="true"
-                          className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                          className="focus:ring-green-1100/50 h-4 w-4 text-green-1100 border-gray-300"
                         />
                         <label htmlFor="attending" className="ml-3 block text-sm font-medium text-gray-700">
                           Yes
@@ -204,11 +221,12 @@ const RSVPForm = () => {
                       <div className="flex items-center">
                         <input
                           {...register("attending")}
+                          required
                           id="not-attending"
                           name="attending"
                           type="radio"
                           value="false"
-                          className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                          className="focus:ring-green-1100/50 h-4 w-4 text-green-1100 border-gray-300"
                         />
                         <label htmlFor="not-attending" className="ml-3 block text-sm font-medium text-gray-700">
                           No
@@ -217,13 +235,20 @@ const RSVPForm = () => {
                     </div>
                   </fieldset>
                 </div>
-
-
                 <button
+                  disabled={submitting || submitted}
                   type="submit"
                   className="flex w-full justify-center rounded-md border border-transparent bg-green-1000 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-1100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                 >
-                  Sign in
+                  {
+                    submitting && <ImSpinner2 className="animate-spin text-2xl text-white/70" />
+                  }
+                  {
+                    (!submitting && !submitted) && "Submit"
+                  }
+                  {
+                    submitted && "Submitted!"
+                  }
                 </button>
               </form>
             </div>

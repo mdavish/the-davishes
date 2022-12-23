@@ -7,7 +7,6 @@ import {
   GetPath,
   GetHeadConfig,
 } from "@yext/pages/*";
-import { getRuntime } from "@yext/pages/util";
 import { Site, siteSchema } from "../types/site";
 import FadeIn from "react-fade-in";
 import { IoChevronDownCircle, IoCalendarOutline, IoLocationOutline } from "react-icons/io5";
@@ -21,6 +20,8 @@ import { Disclosure, Transition } from "@headlessui/react";
 import Block from "../components/Block";
 import cx from "classnames";
 import Tilt from 'react-parallax-tilt';
+import { addressToUrlString } from "../utils";
+import { useEffect } from "react";
 // import ReactMarkdown from "react-markdown";
 
 export const config: TemplateConfig = {
@@ -67,6 +68,14 @@ export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = () => ({
 
 const SiteTemplate = (props: TemplateRenderProps) => {
 
+  const parallaxRef = useRef<IParallax>(null);
+
+  // Every time the current parallexRef.current changes, consol.log it
+  useEffect(() => {
+    console.log("This is the current parallaxRef.current:")
+    console.log(parallaxRef.current?.current);
+  }, [parallaxRef.current?.current])
+
   console.log(props.document);
   let site: Site;
   try {
@@ -79,18 +88,17 @@ const SiteTemplate = (props: TemplateRenderProps) => {
     })
     throw e;
   }
-  const parallaxRef = useRef<IParallax>(null);
   return (
     <Layout>
-      <Parallax pages={4.5} ref={parallaxRef} >
+      <Parallax pages={4.5} ref={parallaxRef}>
         <ParallaxLayer >
           <div
             className="flex flex-col justify-center h-full">
             <FadeIn delay={250} >
               <div
                 className="text-center flex flex-col gap-y-10">
-                <h1 className="text-8xl tracking-wider text-green-1100 font-lobster">The Davishes</h1>
-                <h2 className="text-5xl font-light text-green-1100 font-lobsterTwo">8 July, 2023</h2>
+                <h1 className="text-6xl lg:text-8xl text-green-1100 font-lobster">The Davishes</h1>
+                <h2 className="text-4xl lg:text-5xl font-light text-green-1100 font-lobsterTwo">8 July, 2023</h2>
                 <button
                   onClick={() => {
                     parallaxRef.current?.scrollTo(1);
@@ -117,8 +125,8 @@ const SiteTemplate = (props: TemplateRenderProps) => {
                 />
               </Tilt>
             </div>
-            <div className="p-8 my-auto">
-              <Header>
+            <div className="lg:p-8 my-auto">
+              <Header className="text-center lg:text-left">
                 Our Story
               </Header>
               <P>
@@ -128,33 +136,30 @@ const SiteTemplate = (props: TemplateRenderProps) => {
           </div>
         </Block>
         <Block i={1}>
-          <Header className="text-center">
+          <Header className="text-left lg:text-center">
             Itinerary
           </Header>
           <div className="flex flex-col gap-y-10">
             {
               site.c_itinerary.map((event, i) => {
                 const eventLocation = event.c_eventLocation[0];
+                const addressUrlString = addressToUrlString(eventLocation.address);
                 return (
                   <div key={i} className="flex flex-col lg:flex-row gap-y-4 lg:gap-y-0 gap-x-4">
-                    {/* <div className="shrink-0 aspect-auto">
-                    {event.c_eventPhoto &&
-                      <Image
-                        className="h-48 w-48 object-cover my-auto"
-                        image={event.c_eventPhoto}
-                      />}
-                  </div> */}
-                    <div className="flex flex-row gap-x-10">
-                      <Header className="my-auto">
+                    <div className="flex flex-row gap-x-2 lg:gap-x-10">
+                      <Header className="my-auto hidden lg:block">
                         {i + 1}
                       </Header>
                       <div className="flex flex-col gap-y-2">
                         <h3 className="text-2xl font-medium text-green-1100 font-lobsterTwo">
+                          <span className="lg:hidden">
+                            {`${i + 1}. `}
+                          </span>
                           {event.name}
                         </h3>
                         <div className="text-sm text-green-1100 flex flex-row align-baseline">
                           <Link
-                            href={`https://calendar.google.com/calendar/r/eventedit?text=${event.name}&dates=${event.time.start.toISOString().replace(/[-:]/g, "")}/${event.time.end.toISOString().replace(/[-:]/g, "")}&details=${event.description}`}
+                            href={`https://calendar.google.com/calendar/r/eventedit?text=${event.name}&dates=${event.time.start.toISOString().replace(/[-:]/g, "")}/${event.time.end.toISOString().replace(/[-:]/g, "")}&details=${event.description}&location=${addressUrlString}`}
                             target="_blank"
                             rel="noreferrer"
                           >
@@ -169,10 +174,9 @@ const SiteTemplate = (props: TemplateRenderProps) => {
                             })}
                           </Link>
                         </div>
-                        {/* We show a similar looking link for the location */}
                         <div className="text-sm text-green-1100 flex flex-row align-baseline">
                           <Link
-                            href={`https://www.google.com/maps/search/`}
+                            href={`https://www.google.com/maps/search/?api=1&query=${addressUrlString}`}
                             target="_blank"
                             rel="noreferrer"
                           >
@@ -211,7 +215,7 @@ const SiteTemplate = (props: TemplateRenderProps) => {
                           >
                             <span>{faq.name}</span>
                             <svg
-                              className={`${open ? 'transform rotate-180' : ''} w-5 h-5 text-green-1100`}
+                              className={`${open ? 'transform rotate-180' : ''} w-5 h-5 text-green-1100 shrink-0`}
                               xmlns="http://www.w3.org/2000/svg"
                               viewBox="0 0 20 20"
                               fill="currentColor"

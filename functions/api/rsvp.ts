@@ -1,6 +1,12 @@
-export default function main(argumentJson) {
+export async function main(argumentJson: any) {
   return {
-    hello: "world",
-    input: argumentJson,
+    body: {
+      message: "Hello World",
+      input: argumentJson,
+    },
+    statusCode: 200,
+    headers: {
+      "Content-Type": "application/json",
+    },
   };
 }

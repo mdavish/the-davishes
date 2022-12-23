@@ -20,15 +20,17 @@ export const faqSchema = z.object({
   answer: z.string(),
 });
 
+export const addressSchema = z.object({
+  line1: z.string(),
+  line2: z.optional(z.string()),
+  city: z.string(),
+  region: z.string().optional(),
+  postalCode: z.string(),
+});
+
 export const locationSchema = z.object({
   name: z.string(),
-  address: z.object({
-    line1: z.string(),
-    line2: z.optional(z.string()),
-    city: z.string(),
-    region: z.string().optional(),
-    postalCode: z.string(),
-  }),
+  address: addressSchema,
 });
 
 export const eventSchema = z.object({
@@ -39,7 +41,7 @@ export const eventSchema = z.object({
     start: z.coerce.date(),
     end: z.coerce.date(),
   }),
-  c_eventLocation: z.array(locationSchema).min(0).max(1),
+  c_eventLocation: z.array(locationSchema).min(1).max(1),
 });
 
 export const siteSchema = z.object({
@@ -65,16 +67,7 @@ export const weddingGuest = z.object({
   c_rSVPStatus: z.optional(z.enum(["ATTENDING", "NOT_ATTENDING"])),
   mainPhoneNumber: z.optional(z.string()),
   c_guestEmail: z.optional(z.string()),
-  address: z.optional(
-    z.object({
-      line1: z.string(),
-      line2: z.optional(z.string()),
-      city: z.string(),
-      region: z.string(),
-      postalCode: z.string(),
-      countryCode: z.string(),
-    })
-  ),
+  address: z.optional(addressSchema),
   c_side: z.enum(["MAX", "ASHLEY"]),
   c_notes: z.optional(z.string()),
 });
@@ -96,3 +89,7 @@ export type WeddingGuest = z.infer<typeof weddingGuest>;
 export type WeddingGuestAPIResponse = z.infer<
   typeof weddingGuestAPIResponseSchema
 >;
+export type Event = z.infer<typeof eventSchema>;
+export type Location = z.infer<typeof locationSchema>;
+export type Address = z.infer<typeof addressSchema>;
+export type FAQ = z.infer<typeof faqSchema>;
