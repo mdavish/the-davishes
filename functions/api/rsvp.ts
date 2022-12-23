@@ -56,42 +56,11 @@ const exampleApiRequest = {
 
 const apiRequestSchema = z.object({
   method: z.string(),
-  body: z.string(),
+  body: z.string().optional(),
   urlArgs: z.object({}),
   userAgent: z.string(),
   requestUrl: z.string(),
-  headers: z
-    .object({
-      Accept: z.array(z.string()),
-      "Accept-Encoding": z.array(z.string()),
-      "Cache-Control": z.array(z.string()),
-      "Cdn-Loop": z.array(z.string()),
-      "Cf-Connecting-Ip": z.array(z.string()),
-      "Cf-Ipcountry": z.array(z.string()),
-      "Cf-Ray": z.array(z.string()),
-      "Cf-Visitor": z.array(z.string()),
-      "Content-Length": z.array(z.string()),
-      "Content-Type": z.array(z.string()),
-      Cookie: z.array(z.string()),
-      "Postman-Token": z.array(z.string()),
-      "User-Agent": z.array(z.string()),
-      Via: z.array(z.string()),
-      "X-Bot-Ja3-Hash": z.array(z.string()),
-      "X-Bot-Score": z.array(z.string()),
-      "X-Bot-Verified": z.array(z.string()),
-      "X-Cloud-Trace-Context": z.array(z.string()),
-      "X-Forwarded-For": z.array(z.string()),
-      "X-Forwarded-Host": z.array(z.string()),
-      "X-Forwarded-Port": z.array(z.string()),
-      "X-Forwarded-Proto": z.array(z.string()),
-      "X-Forwarded-Server": z.array(z.string()),
-      "X-Ip-City": z.array(z.string()),
-      "X-Ip-Continent": z.array(z.string()),
-      "X-Ip-Country": z.array(z.string()),
-      "X-Ip-Is-Eu": z.array(z.string()),
-      "X-Real-Ip": z.array(z.string()),
-    })
-    .optional(),
+  headers: z.any().optional(),
 });
 
 export type APIRequest = z.infer<typeof apiRequestSchema>;
@@ -104,10 +73,13 @@ export type APIResponse = {
   };
 };
 
-export async function main(
-  apiRequest: typeof exampleApiRequest
+export async function handleApiRequest(
+  apiRequest: APIRequest
 ): Promise<APIResponse> {
   let parsedRequest: APIRequest;
+  await setTimeout(() => {
+    console.log("waiting so that Deno doesn't yell at me");
+  }, 1000);
   try {
     parsedRequest = apiRequestSchema.parse(apiRequest);
   } catch (e) {
@@ -116,14 +88,13 @@ export async function main(
         "Content-Type": "application/json",
       },
       body: {
-        message: "Something went wrong parsing your request",
+        message: "Something went wrong in the zod parsing of your request.",
         error: e,
       },
       statusCode: 500,
     };
   }
-  const body = JSON.parse(parsedRequest.body);
-  if (!body) {
+  if (!parsedRequest.body) {
     return {
       headers: {
         "Content-Type": "application/json",
@@ -134,14 +105,21 @@ export async function main(
       statusCode: 400,
     };
   }
+  const parsedBody = JSON.parse(parsedRequest.body);
   return {
     body: {
-      message: "Hello World",
-      parsedBody: body,
+      message: "Hello World! The request has been successful.",
+      parsedBody: parsedBody,
     },
     statusCode: 200,
     headers: {
       "Content-Type": "application/json",
     },
   };
+}
+
+export async function main(apiRequest: APIRequest): Promise<string> {
+  // Let's see if this works?
+  const response = await handleApiRequest(apiRequest);
+  return JSON.stringify(response);
 }
