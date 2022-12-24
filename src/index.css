@@ -16,6 +16,6 @@ a::after {
 }
 
 /* Show and animate the underline on hover */
-a:hover::after {
+a:not(.no-underline):hover::after {
   width: 100%;
 }

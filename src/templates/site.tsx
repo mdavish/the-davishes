@@ -239,7 +239,7 @@ const SiteTemplate = (props: TemplateRenderProps) => {
             Lodging
           </Header>
           <SearchHeadlessProvider searcher={headless}>
-            <div className="h-3/4 rounded-lg">
+            <div className="h-3/4 rounded-lg overflow-hidden">
               <MapboxMap<Location>
                 PinComponent={MapPin}
                 mapboxOptions={{
