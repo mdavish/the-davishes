@@ -33,7 +33,6 @@ const getPersonByName = async (name: string): Promise<WeddingGuest> => {
 
 const RSVPForm = () => {
 
-
   const [selectedGuest, setSelectedGuest] = useState<WeddingGuest | undefined>(undefined);
   // This is for loading the person's data
   const [loading, setLoading] = useState(false);

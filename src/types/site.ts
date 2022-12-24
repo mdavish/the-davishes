@@ -31,6 +31,10 @@ export const addressSchema = z.object({
 export const locationSchema = z.object({
   name: z.string(),
   address: addressSchema,
+  c_weddingDescription: z.string().optional(),
+  c_locationTypre: z.enum(["RECOMMENDATION", "EVENT_VENUE"]).optional(),
+  c_photo: photoSchema.optional(),
+  priceRange: z.enum(["ONE", "TWO", "THREE", "FOUR"]).optional(),
 });
 
 export const eventSchema = z.object({

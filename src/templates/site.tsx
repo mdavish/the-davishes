@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   TemplateConfig,
   TransformProps,
@@ -21,7 +21,10 @@ import Block from "../components/Block";
 import cx from "classnames";
 import Tilt from 'react-parallax-tilt';
 import { addressToUrlString } from "../utils";
-import { useEffect } from "react";
+import { MapboxMap } from "@yext/search-ui-react";
+import { provideHeadless, SearchHeadlessProvider } from "@yext/search-headless-react";
+import Location from "../types/search/locations";
+import MapPin from "../components/MapPin";
 // import ReactMarkdown from "react-markdown";
 
 export const config: TemplateConfig = {
@@ -41,6 +44,11 @@ export const config: TemplateConfig = {
       "c_itinerary.c_recommendedAttire",
       "c_itinerary.c_eventLocation.name",
       "c_itinerary.c_eventLocation.address",
+      "c_recommendedLodging.name",
+      "c_recommendedLodging.address",
+      "c_recommendedLodging.c_weddingDescription",
+      "c_recommendedLodging.c_photo",
+      "c_recommendedLodging.priceRange",
     ],
     filter: {
       entityTypes: ["ce_site"]
@@ -66,15 +74,32 @@ export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = () => ({
   charset: "utf-8",
 });
 
+const headless = provideHeadless({
+  apiKey: "e5752463b6278ab2218622a356ab15f7",
+  locale: "en",
+  experienceKey: "davish-goldschmid-wedding",
+  experienceVersion: "PRODUCTION",
+});
+
 const SiteTemplate = (props: TemplateRenderProps) => {
 
   const parallaxRef = useRef<IParallax>(null);
 
-  // Every time the current parallexRef.current changes, consol.log it
   useEffect(() => {
-    console.log("This is the current parallaxRef.current:")
-    console.log(parallaxRef.current?.current);
-  }, [parallaxRef.current?.current])
+    const hash = window.location.hash.substring(1);
+    const hashToIdx: { [k: string]: number } = {
+      "our-story": 1,
+      "itinerary": 2,
+      "lodging": 3,
+      "faq": 4,
+      "rsvp": 5,
+    }
+    if (hashToIdx[hash]) {
+      parallaxRef.current?.scrollTo(hashToIdx[hash] - 0.07);
+    } else {
+      console.warn(`Hash ${hash} not found in hashToIdx. You're probably doing something wrong.`);
+    }
+  }), [parallaxRef.current];
 
   console.log(props.document);
   let site: Site;
@@ -90,7 +115,7 @@ const SiteTemplate = (props: TemplateRenderProps) => {
   }
   return (
     <Layout>
-      <Parallax pages={4.5} ref={parallaxRef}>
+      <Parallax pages={5.5} ref={parallaxRef}>
         <ParallaxLayer >
           <div
             className="flex flex-col justify-center h-full">
@@ -126,7 +151,10 @@ const SiteTemplate = (props: TemplateRenderProps) => {
               </Tilt>
             </div>
             <div className="lg:p-8 my-auto">
-              <Header className="text-center lg:text-left">
+              <Header
+                className="text-center lg:text-left"
+                href="our-story"
+              >
                 Our Story
               </Header>
               <P>
@@ -136,9 +164,13 @@ const SiteTemplate = (props: TemplateRenderProps) => {
           </div>
         </Block>
         <Block i={1}>
-          <Header className="text-left lg:text-center">
-            Itinerary
-          </Header>
+          <div className="w-full flex flex-row">
+            <div className="lg:mx-auto">
+              <Header className="lg:mx-auto" href="itinerary">
+                Itinerary
+              </Header>
+            </div>
+          </div>
           <div className="flex flex-col gap-y-10">
             {
               site.c_itinerary.map((event, i) => {
@@ -147,13 +179,18 @@ const SiteTemplate = (props: TemplateRenderProps) => {
                 return (
                   <div key={i} className="flex flex-col lg:flex-row gap-y-4 lg:gap-y-0 gap-x-4">
                     <div className="flex flex-row gap-x-2 lg:gap-x-10">
-                      <Header className="my-auto hidden lg:block">
-                        {i + 1}
-                      </Header>
+                      <div className="hidden lg:block">
+                        <Header className="">
+                          {i + 1}
+                        </Header>
+                        {/* There is a nice large vertical line tying each together */}
+                        <div className="w-[1.5px] h-3/4 mx-auto bg-green-1100 my-auto hidden lg:block" />
+                      </div>
+
                       <div className="flex flex-col gap-y-2">
                         <h3 className="text-2xl font-medium text-green-1100 font-lobsterTwo">
                           <span className="lg:hidden">
-                            {`${i + 1}. `}
+                            {`${i + 1}.`}
                           </span>
                           {event.name}
                         </h3>
@@ -164,16 +201,18 @@ const SiteTemplate = (props: TemplateRenderProps) => {
                             rel="noreferrer"
                           >
                             <IoCalendarOutline className="inline-block mr-2 mb-1 text-green-1100" />
-                            {event.time.start.toLocaleString("en-US", {
-                              // Config matches this format: "July 8, 2023, 5:00 PM"
-                              month: "long",
-                              day: "numeric",
-                              year: "numeric",
-                              hour: "numeric",
-                              minute: "numeric",
-                            })}
-                          </Link>
-                        </div>
+                            {
+                              event.time.start.toLocaleString("en-US", {
+                                // Config matches this format: "July 8, 2023, 5:00 PM"
+                                month: "long",
+                                day: "numeric",
+                                year: "numeric",
+                                hour: "numeric",
+                                minute: "numeric",
+                              })
+                            }
+                          </Link >
+                        </div >
                         <div className="text-sm text-green-1100 flex flex-row align-baseline">
                           <Link
                             href={`https://www.google.com/maps/search/?api=1&query=${addressUrlString}`}
@@ -187,15 +226,33 @@ const SiteTemplate = (props: TemplateRenderProps) => {
                         <P>
                           {event.description}
                         </P>
-                      </div>
-                    </div>
-                  </div>
+                      </div >
+                    </div >
+                  </div >
                 )
               })
             }
-          </div>
-        </Block>
+          </div >
+        </Block >
         <Block i={2}>
+          <Header href="lodging">
+            Lodging
+          </Header>
+          <SearchHeadlessProvider searcher={headless}>
+            <div className="h-3/4 rounded-lg">
+              <MapboxMap<Location>
+                PinComponent={MapPin}
+                mapboxOptions={{
+                  center: {
+                    lat: 38.69627313793442, lng: -9.419488552606975,
+                    zoom: 12,
+                  }
+                }}
+                mapboxAccessToken="pk.eyJ1IjoibWRhdmlzaCIsImEiOiJja3pkNzZ4cDYydmF6MnZtemZrNXJxYmtvIn0.9CYfaiw9PB90VlQEqt3dRQ" />
+            </div>
+          </SearchHeadlessProvider>
+        </Block>
+        <Block i={3}>
           <div className="flex flex-col h-full">
             <Header className="text-center">
               Frequently Asked Questions
@@ -251,8 +308,8 @@ const SiteTemplate = (props: TemplateRenderProps) => {
             </div>
           </div>
         </Block>
-      </Parallax>
-    </Layout>
+      </Parallax >
+    </Layout >
   );
 };
 
