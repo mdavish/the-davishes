@@ -93,7 +93,7 @@ const RSVPForm = (props: { itinerary: Itinerary }) => {
         <p className="text-center text-green-1100">
           Enter your name to RSVP.
         </p>
-        <div className="my-4">
+        {(!selectedGuest) && <div className="my-4">
           <FilterSearch
             placeholder="Search for your name..."
             customCssClasses={{
@@ -124,7 +124,7 @@ const RSVPForm = (props: { itinerary: Itinerary }) => {
                 })
             }}
           />
-        </div>
+        </div>}
         <div>
           {
             loading &&
@@ -254,7 +254,7 @@ const RSVPForm = (props: { itinerary: Itinerary }) => {
                         {...register("note")}
                         id="note"
                         name="note"
-                        placeholder="Any special requests?"
+                        placeholder="Let us know if you have any dietary restrictions or require special accommodations. "
                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-0 sm:text-sm"
                       />
                     </div>

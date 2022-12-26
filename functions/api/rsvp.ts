@@ -21,10 +21,6 @@ export type APIResponse = {
   };
 };
 
-const updateYextEntity = async (entityId: string, data: any): string => {
-  return "yes";
-};
-
 export async function main(apiRequest: APIRequest): Promise<APIResponse> {
   let parsedRequest: APIRequest;
   await setTimeout(() => {
