@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import { FilterSearch } from "@yext/search-ui-react";
 import { useSearchActions } from "@yext/search-headless-react";
 import { useForm } from "react-hook-form";
-import { weddingGuestAPIResponseSchema, WeddingGuest } from "../types/site";
+import { weddingGuestAPIResponseSchema, WeddingGuest, Itinerary } from "../types/site";
 import { ImSpinner2 } from "react-icons/im";
 import { z } from "zod";
+import EventLink from "./EventLink";
+
+const PHONE_REGEX = /^1?\d{10}$/
 
 const getPersonByName = async (name: string): Promise<WeddingGuest> => {
   const url = "https://liveapi.yext.com/v2/accounts/me/entities?";
@@ -31,8 +34,19 @@ const getPersonByName = async (name: string): Promise<WeddingGuest> => {
   }
 };
 
-const RSVPForm = () => {
+const formSchema = z.object({
+  email: z.string().email(),
+  phone: z.string().regex(PHONE_REGEX),
+  note: z.string().optional(),
+  "attending-0": z.coerce.number().min(0).max(2), // Welcome Drinks
+  "attending-1": z.coerce.number().min(0).max(2), // Rehearsal Dinner
+  "attending-2": z.coerce.number().min(0).max(2), // Wedding
+});
 
+type FormData = z.infer<typeof formSchema>;
+
+const RSVPForm = (props: { itinerary: Itinerary }) => {
+  const { itinerary } = props;
   const [selectedGuest, setSelectedGuest] = useState<WeddingGuest | undefined>(undefined);
   // This is for loading the person's data
   const [loading, setLoading] = useState(false);
@@ -41,34 +55,28 @@ const RSVPForm = () => {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const { register, handleSubmit } = useForm({
-    defaultValues: {
-      email: selectedGuest?.c_guestEmail,
-      phone: selectedGuest?.mainPhoneNumber,
-      note: undefined,
-      attending: true,
-    }
-  });
-
-  const formSchema = z.object({
-    email: z.string().email(),
-    phone: z.string(),
-    attending: z.coerce.boolean(),
-    note: z.string().optional(),
-  });
+  const { register, handleSubmit } = useForm();
 
   const onSubmit = async (data: any) => {
-    console.log(data);
-    const parsedData = formSchema.parse(data);
+    setSubmitting(true);
+
+    let parsedData: FormData;
+    try {
+      parsedData = formSchema.parse(data);
+    } catch (e) {
+      console.error(e);
+      window.alert("Whoops something went wrong. Please try again.)");
+      setSubmitted(false);
+      return;
+    }
     console.log(parsedData);
-    // 2 second timeout
-    await setTimeout(() => {
-      setSubmitting(true);
-    }, 2000);
-    setSubmitting(false);
-    setSubmitted(true);
-    window.alert("RSVP submitted! Thank you for your response. :)");
-    // window.alert("RSVP submitted! Thank you for your response. :)");
+
+    setTimeout(() => {
+      setSubmitting(false);
+      setSubmitted(true);
+      window.alert("RSVP submitted! Thank you for your response.)");
+    }, 1000);
+
   };
 
   const searchActions = useSearchActions();
@@ -77,8 +85,8 @@ const RSVPForm = () => {
   }, []);
 
   return (
-    <div className="mt-28 flex flex-col justify-center items-center h-full">
-      <div className="h-full">
+    <div className="overflow-auto flex flex-col justify-center items-center h-full">
+      <div className="mt-12 mb-20 h-full w-11/12 md:w-3/4 xl:w-1/3 mx-auto">
         <h1 className="text-4xl font-bold text-center font-lobsterTwo text-green-1100">
           RSVP
         </h1>
@@ -89,7 +97,7 @@ const RSVPForm = () => {
           <FilterSearch
             placeholder="Search for your name..."
             customCssClasses={{
-              filterSearchContainer: "w-96 my-0 shadow-sm",
+              filterSearchContainer: "w-full mx-auto my-0 shadow-sm",
               inputElement: "px-3 py-3",
             }}
             sectioned={false}
@@ -105,7 +113,6 @@ const RSVPForm = () => {
               console.log(newDisplayName, newFilter)
               getPersonByName(newDisplayName)
                 .then((guest) => {
-                  console.log({ guest })
                   setSelectedGuest(guest);
                   setLoading(false);
                   setError(false);
@@ -134,21 +141,21 @@ const RSVPForm = () => {
           {
             (!loading && selectedGuest) &&
             <div>
-              <div className="my-6">
+              <div className="mt-4 mb-1.5">
                 {/* There is a horizontal line on either side of the paragraph */}
                 <div className="flex flex-row justify-center items-center gap-x-4">
-                  <div className="w-1/5 h-[2px] bg-green-1100"></div>
-                  <p className="text-center text-xl font-bold text-green-1100 font-lobsterTwo">
+                  <div className="w-full h-[1.5px] bg-green-1100/30"></div>
+                  <p className="whitespace-nowrap shrink-0 mx-auto text-center text-xl font-bold text-green-1100 font-lobsterTwo">
                     Welcome {selectedGuest.name}!
                   </p>
-                  <div className="w-1/5 h-[2px] bg-green-1100"></div>
+                  <div className="w-full h-[1.5px] bg-green-1100/30"></div>
                 </div>
                 <p className="text-sm text-green-1100 text-center">
                   Please confirm your information below.
                 </p>
               </div>
               <form
-                className="flex flex-col justify-center items-center gap-y-4"
+                className="flex flex-col justify-center items-center gap-y-3"
                 onSubmit={handleSubmit(onSubmit)}>
                 <div className="w-full">
                   <label htmlFor="email" className="w-full text-left block text-sm font-medium text-gray-700">
@@ -173,7 +180,7 @@ const RSVPForm = () => {
                   </label>
                   <div className="mt-1">
                     <input
-                      {...register("phone", { required: true, })}
+                      {...register("phone", { required: true, pattern: PHONE_REGEX })}
                       id="phone"
                       name="phone"
                       type="tel"
@@ -184,63 +191,82 @@ const RSVPForm = () => {
                     />
                   </div>
                 </div>
-                <div className="w-full">
-                  <label htmlFor="email" className="w-full text-left block text-sm font-medium text-gray-700">
-                    Note
-                  </label>
-                  <div className="mt-1">
-                    <textarea
-                      {...register("note")}
-                      id="note"
-                      name="note"
-                      placeholder="Any special requests?"
-                      className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-0 sm:text-sm"
-                    />
-                  </div>
-                </div>
                 {/* Some nice radio buttons for attending vs not attending */}
                 <div className="w-full">
-                  <fieldset>
-                    <legend className="text-sm font-medium text-gray-900">Will you be attending?</legend>
-                    <div className="mt-4 space-y-2">
-                      <div className="flex items-center">
-                        <input
-                          {...register("attending")}
-                          required
-                          id="attending"
-                          name="attending"
-                          type="radio"
-                          value="true"
-                          className="focus:ring-green-1100/50 h-4 w-4 text-green-1100 border-gray-300"
-                        />
-                        <label htmlFor="attending" className="ml-3 block text-sm font-medium text-gray-700">
-                          Yes
-                        </label>
-                      </div>
-                      <div className="flex items-center">
-                        <input
-                          {...register("attending")}
-                          required
-                          id="not-attending"
-                          name="attending"
-                          type="radio"
-                          value="false"
-                          className="focus:ring-green-1100/50 h-4 w-4 text-green-1100 border-gray-300"
-                        />
-                        <label htmlFor="not-attending" className="ml-3 block text-sm font-medium text-gray-700">
-                          No
-                        </label>
-                      </div>
+                  {
+                    selectedGuest.c_hasPlusOne ?
+                      <div className="mx-auto mb-3 w-full3">
+                        <p className="font-lobsterTwo text-lg text-center text-green-1100">
+                          Looks like you have a plus one!
+                        </p>
+                        <p className="text-center text-sm  text-green-1100">
+                          Please let us know which events you and <span className="font-bold">{selectedGuest.c_plusOneDetails?.firstName} {selectedGuest.c_plusOneDetails?.lastName} </span> will be attending.
+                        </p>
+                      </div> :
+                      <p className="text-sm text-green-1100 text-center">
+                        Please let us know which events you will be attending!
+                      </p>
+                  }
+                  <div className="w-full flex flex-col divide-y divide-green-1100/30">
+                    {
+                      itinerary.map((event, index) => {
+                        return (
+                          <div className="flex flex-col sm:flex-row py-4" key={index}>
+                            <div>
+                              <h3 className=" text-sm font-medium text-gray-700">
+                                {event.name}
+                              </h3>
+                              <EventLink className="text-xs text-gray-700" event={event} />
+                            </div>
+                            <div className="sm:ml-auto">
+                              <select
+                                {...register(`attending-${index}`, { required: true })}
+                                id={`attending-${index}`}
+                                name={`attending-${index}`}
+                                defaultValue={selectedGuest.c_hasPlusOne ? 2 : 1}
+                                autoComplete="attending"
+                                className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm sm:max-w-xs sm:text-sm"
+                              >
+                                {selectedGuest.c_hasPlusOne ?
+                                  <>
+                                    <option value={2}>Both Attending</option>
+                                    <option value={1}>Just Me</option>
+                                    <option value={0}>Neither Attending</option>
+                                  </> :
+                                  <>
+                                    <option value={1}>Attending</option>
+                                    <option value={0}>Not Attending</option>
+                                  </>
+                                }
+                              </select>
+                            </div>
+                          </div>
+                        )
+                      })
+                    }
+                  </div>
+                  <div className="w-full">
+                    <label htmlFor="note" className="w-full text-left block text-sm font-medium text-gray-700">
+                      Note
+                    </label>
+                    <div className="mt-1">
+                      <textarea
+                        {...register("note")}
+                        id="note"
+                        name="note"
+                        placeholder="Any special requests?"
+                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-0 sm:text-sm"
+                      />
                     </div>
-                  </fieldset>
+                  </div>
                 </div>
                 <button
                   disabled={submitting || submitted}
                   type="submit"
-                  className="flex w-full justify-center rounded-md border border-transparent bg-green-1000 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-1100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                  className="h-10 flex w-full justify-center rounded-md border border-transparent bg-green-1000 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-1100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                 >
                   {
-                    submitting && <ImSpinner2 className="animate-spin text-2xl text-white/70" />
+                    submitting && <ImSpinner2 className="my-auto animate-spin text-white/70" />
                   }
                   {
                     (!submitting && !submitted) && "Submit"
@@ -253,8 +279,8 @@ const RSVPForm = () => {
             </div>
           }
         </div>
-      </div >
-    </div >
+      </div>
+    </div>
   )
 }
 

@@ -1,9 +1,33 @@
-import React, { } from "react";
+import React from "react";
 import Layout from "../components/Layout";
-import { GetPath, Template, TemplateRenderProps } from "@yext/pages/*";
+import { GetPath, Template, TemplateRenderProps, TemplateConfig } from "@yext/pages/*";
 import { provideHeadless, SearchHeadlessProvider } from "@yext/search-headless-react";
 import RSVPForm from "../components/RSVPForm";
+import { itinerarySchema } from "../types/site";
 import "../index.css";
+
+// This also includes the site config so you can fetch the itinerary
+export const config: TemplateConfig = {
+  stream: {
+    $id: "site-stream",
+    fields: [
+      "c_itinerary.name",
+      "c_itinerary.description",
+      "c_itinerary.c_eventPhoto",
+      "c_itinerary.time",
+      "c_itinerary.c_recommendedAttire",
+      "c_itinerary.c_eventLocation.name",
+      "c_itinerary.c_eventLocation.address",
+    ],
+    filter: {
+      entityTypes: ["ce_site"]
+    },
+    localization: {
+      locales: ["en"],
+      primary: false,
+    },
+  }
+};
 
 export const getPath: GetPath<TemplateRenderProps> = () => {
   return "rsvp"
@@ -16,11 +40,13 @@ const headless = provideHeadless({
   experienceVersion: "PRODUCTION",
 });
 
-const RsvpTemplate: Template<TemplateRenderProps> = () => {
+const RsvpTemplate: Template<TemplateRenderProps> = (props: TemplateRenderProps) => {
+  const rawDocument = props.document;
+  const itinerary = itinerarySchema.parse(rawDocument.c_itinerary);
   return (
     <Layout>
       <SearchHeadlessProvider searcher={headless}>
-        <RSVPForm />
+        <RSVPForm itinerary={itinerary} />
       </SearchHeadlessProvider>
     </Layout>
   )
