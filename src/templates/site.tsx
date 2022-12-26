@@ -1,3 +1,4 @@
+import "../index.css";
 import React, { useEffect, useRef } from "react";
 import {
   TemplateConfig,
@@ -9,18 +10,19 @@ import {
 } from "@yext/pages/*";
 import { Site, siteSchema } from "../types/site";
 import FadeIn from "react-fade-in";
-import { IoChevronDownCircle, IoCalendarOutline, IoLocationOutline } from "react-icons/io5";
+import { IoChevronDownCircle, IoLocationOutline } from "react-icons/io5";
 import { Parallax, ParallaxLayer, IParallax } from "@react-spring/parallax";
+import { addressToUrlString } from "../utils";
 import Layout from "../components/Layout";
 import Header from "../components/Header";
+import Block from "../components/Block";
 import P from "../components/P";
-import "../index.css";
+import Footer from "../components/Footer";
+import EventLink from "../components/EventLink";
 import { Image, Link } from "@yext/pages/components";
 import { Disclosure, Transition } from "@headlessui/react";
-import Block from "../components/Block";
 import cx from "classnames";
 import Tilt from 'react-parallax-tilt';
-import { addressToUrlString } from "../utils";
 import { provideHeadless, SearchHeadlessProvider } from "@yext/search-headless-react";
 import LodgingMap from "../components/LodgingMap";
 // import ReactMarkdown from "react-markdown";
@@ -192,24 +194,8 @@ const SiteTemplate = (props: TemplateRenderProps) => {
                           </span>
                           {event.name}
                         </h3>
-                        <div className="text-sm text-green-1100 flex flex-row align-baseline">
-                          <Link
-                            href={`https://calendar.google.com/calendar/r/eventedit?text=${event.name}&dates=${event.time.start.toISOString().replace(/[-:]/g, "")}/${event.time.end.toISOString().replace(/[-:]/g, "")}&details=${event.description}&location=${addressUrlString}`}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <IoCalendarOutline className="inline-block mr-2 mb-1 text-green-1100" />
-                            {
-                              event.time.start.toLocaleString("en-US", {
-                                // Config matches this format: "July 8, 2023, 5:00 PM"
-                                month: "long",
-                                day: "numeric",
-                                year: "numeric",
-                                hour: "numeric",
-                                minute: "numeric",
-                              })
-                            }
-                          </Link >
+                        <div className="flex flex-row align-baseline">
+                          <EventLink event={event} />
                         </div >
                         <div className="text-sm text-green-1100 flex flex-row align-baseline">
                           <Link
@@ -297,6 +283,7 @@ const SiteTemplate = (props: TemplateRenderProps) => {
           </div>
         </Block>
       </Parallax >
+      <Footer />
     </Layout >
   );
 };

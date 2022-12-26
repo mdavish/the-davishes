@@ -24,7 +24,7 @@ const navItems: NavItem[] = [
 
 export const Nav = (): JSX.Element => {
   return (
-    <div className="absolute z-50 w-full flex-row justify-between items-center h-20 px-10 hidden lg:flex border-b border-green-1100/5 bg-beige-100">
+    <div className="sticky top-0 z-50 w-full flex-row justify-between items-center h-20 px-10 hidden lg:flex border-b border-green-1100/5 bg-beige-100">
       <div className="flex flex-row gap-x-10">
         <h1 className="text-3xl font-lobster text-green-1100">
           <Link href="/">The Davishes</Link>

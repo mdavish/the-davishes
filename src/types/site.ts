@@ -48,13 +48,15 @@ export const eventSchema = z.object({
   c_eventLocation: z.array(locationSchema).min(1).max(1),
 });
 
+export const itinerarySchema = z.array(eventSchema);
+
 export const siteSchema = z.object({
   name: z.string(),
   c_dominantPhoto: photoSchema,
   c_ourStoryCopy: z.string(),
   c_ourStoryPhoto: photoSchema,
   c_faqs: z.array(faqSchema),
-  c_itinerary: z.array(eventSchema),
+  c_itinerary: itinerarySchema,
 });
 
 export const weddingGuest = z.object({
@@ -74,6 +76,14 @@ export const weddingGuest = z.object({
   address: z.optional(addressSchema),
   c_side: z.enum(["MAX", "ASHLEY"]),
   c_notes: z.optional(z.string()),
+  c_plusOneDetails: z.optional(
+    z.object({
+      firstName: z.string(),
+      lastName: z.string(),
+      email: z.string().optional(),
+      phone: z.string().optional(),
+    })
+  ),
 });
 
 export const weddingGuestAPIResponseSchema = z.object({
@@ -94,6 +104,7 @@ export type WeddingGuestAPIResponse = z.infer<
   typeof weddingGuestAPIResponseSchema
 >;
 export type Event = z.infer<typeof eventSchema>;
+export type Itinerary = z.infer<typeof itinerarySchema>;
 export type Location = z.infer<typeof locationSchema>;
 export type Address = z.infer<typeof addressSchema>;
 export type FAQ = z.infer<typeof faqSchema>;
