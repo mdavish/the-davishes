@@ -21,10 +21,8 @@ import Block from "../components/Block";
 import cx from "classnames";
 import Tilt from 'react-parallax-tilt';
 import { addressToUrlString } from "../utils";
-import { MapboxMap } from "@yext/search-ui-react";
 import { provideHeadless, SearchHeadlessProvider } from "@yext/search-headless-react";
-import Location from "../types/search/locations";
-import MapPin from "../components/MapPin";
+import LodgingMap from "../components/LodgingMap";
 // import ReactMarkdown from "react-markdown";
 
 export const config: TemplateConfig = {
@@ -79,6 +77,7 @@ const headless = provideHeadless({
   locale: "en",
   experienceKey: "davish-goldschmid-wedding",
   experienceVersion: "PRODUCTION",
+  headlessId: "location-searcher",
 });
 
 const SiteTemplate = (props: TemplateRenderProps) => {
@@ -184,9 +183,8 @@ const SiteTemplate = (props: TemplateRenderProps) => {
                           {i + 1}
                         </Header>
                         {/* There is a nice large vertical line tying each together */}
-                        <div className="w-[1.5px] h-3/4 mx-auto bg-green-1100 my-auto hidden lg:block" />
+                        <div className="w-[1.5px] h-3/4 mx-auto bg-green-1100/50 my-auto hidden lg:block" />
                       </div>
-
                       <div className="flex flex-col gap-y-2">
                         <h3 className="text-2xl font-medium text-green-1100 font-lobsterTwo">
                           <span className="lg:hidden">
@@ -239,17 +237,7 @@ const SiteTemplate = (props: TemplateRenderProps) => {
             Lodging
           </Header>
           <SearchHeadlessProvider searcher={headless}>
-            <div className="h-3/4 rounded-lg overflow-hidden">
-              <MapboxMap<Location>
-                PinComponent={MapPin}
-                mapboxOptions={{
-                  center: {
-                    lat: 38.69627313793442, lng: -9.419488552606975,
-                    zoom: 12,
-                  }
-                }}
-                mapboxAccessToken="pk.eyJ1IjoibWRhdmlzaCIsImEiOiJja3pkNzZ4cDYydmF6MnZtemZrNXJxYmtvIn0.9CYfaiw9PB90VlQEqt3dRQ" />
-            </div>
+            <LodgingMap />
           </SearchHeadlessProvider>
         </Block>
         <Block i={3}>
