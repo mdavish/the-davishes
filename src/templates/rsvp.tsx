@@ -9,7 +9,7 @@ import "../index.css";
 // This also includes the site config so you can fetch the itinerary
 export const config: TemplateConfig = {
   stream: {
-    $id: "site-stream",
+    $id: "rsvp-stream",
     fields: [
       "c_itinerary.name",
       "c_itinerary.description",
