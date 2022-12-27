@@ -35,6 +35,7 @@ const getPersonByName = async (name: string): Promise<WeddingGuest> => {
 };
 
 const formSchema = z.object({
+  guestId: z.string(),
   email: z.string().email(),
   phone: z.string().regex(PHONE_REGEX),
   note: z.string().optional(),
@@ -61,11 +62,16 @@ const RSVPForm = (props: { itinerary: Itinerary }) => {
     setSubmitting(true);
 
     let parsedData: FormData;
+    if (!selectedGuest) {
+      window.alert("Whoops something went wrong. Please try again.");
+      setSubmitted(false);
+      return;
+    }
     try {
-      parsedData = formSchema.parse(data);
+      parsedData = formSchema.parse({ ...data, guestId: selectedGuest.meta.id });
     } catch (e) {
       console.error(e);
-      window.alert("Whoops something went wrong. Please try again.)");
+      window.alert("Whoops something went wrong. Please try again.");
       setSubmitted(false);
       return;
     }
@@ -82,7 +88,8 @@ const RSVPForm = (props: { itinerary: Itinerary }) => {
         setSubmitting(false);
         return;
       }
-      console.log({ res });
+      const data = await res.json();
+      console.log({ res, data });
       setSubmitted(true);
       window.alert("RSVP submitted! Thank you for your response.)");
     }, 1000);
