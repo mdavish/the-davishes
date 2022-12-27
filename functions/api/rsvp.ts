@@ -18,6 +18,7 @@ export type APIResponse = {
   statusCode: number;
   headers: {
     "Content-Type": "application/json";
+    "Access-Control-Allow-Origin": "*";
   };
 };
 
@@ -32,6 +33,7 @@ export async function main(apiRequest: APIRequest): Promise<APIResponse> {
     return {
       headers: {
         "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
         message: "Something went wrong in the zod parsing of your request.",
@@ -44,6 +46,7 @@ export async function main(apiRequest: APIRequest): Promise<APIResponse> {
     return {
       headers: {
         "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
         message: "No body found!",
@@ -60,6 +63,7 @@ export async function main(apiRequest: APIRequest): Promise<APIResponse> {
     statusCode: 200,
     headers: {
       "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
     },
   };
 }

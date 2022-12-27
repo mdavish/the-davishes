@@ -71,8 +71,18 @@ const RSVPForm = (props: { itinerary: Itinerary }) => {
     }
     console.log(parsedData);
 
-    setTimeout(() => {
+    setTimeout(async () => {
       setSubmitting(false);
+      const res = await fetch("https://www.thedavishes.com/", {
+        method: "POST",
+        body: JSON.stringify(parsedData),
+      });
+      if (res.status !== 200) {
+        window.alert("Whoops something went wrong. Please try again.)");
+        setSubmitting(false);
+        return;
+      }
+      console.log({ res });
       setSubmitted(true);
       window.alert("RSVP submitted! Thank you for your response.)");
     }, 1000);
