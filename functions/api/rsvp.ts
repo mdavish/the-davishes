@@ -27,6 +27,16 @@ export const apiRequestSchema = z.object({
 export type APIRequest = z.infer<typeof apiRequestSchema>;
 export type RequestPayload = z.infer<typeof requestPayloadSchema>;
 
+export interface GuestEntityData {
+  // For some reason, the Yext API requires these to be strings. Very strange.
+  c_nAttendingWelcomeDrinks: string;
+  c_nAttendingRehearsalDinner: string;
+  c_nAttendingWedding: string;
+  c_notes?: string;
+  c_guestEmail: string;
+  mainPhone: string;
+}
+
 export type APIResponse = {
   body: string;
   statusCode: number;
@@ -81,6 +91,7 @@ export async function main(apiRequest: APIRequest): Promise<APIResponse> {
         message:
           "Something went wrong in the zod parsing of your body. Please include a body of the form provided in the attached example.",
         example: {
+          guestId: "max-davish",
           email: "davish9@gmail.com",
           phone: "1234567890",
           note: "I'm so excited to see you!",
@@ -93,14 +104,28 @@ export async function main(apiRequest: APIRequest): Promise<APIResponse> {
       statusCode: 500,
     };
   }
+  const reformattedData: GuestEntityData = {
+    c_nAttendingWelcomeDrinks: parsedBody["attending-0"].toString(),
+    c_nAttendingRehearsalDinner: parsedBody["attending-1"].toString(),
+    c_nAttendingWedding: parsedBody["attending-2"].toString(),
+    c_notes: parsedBody.note,
+    c_guestEmail: parsedBody.email,
+    mainPhone: parsedBody.phone,
+  };
   const res = await fetch(
     `https://api.yext.com/v2/accounts/me/entities/${parsedBody.guestId}?v=20221225&api_key=${YEXT_API_KEY}`,
     {
-      method: "GET",
+      method: "PUT",
+      body: JSON.stringify(reformattedData),
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
   );
   if (res.status !== 200) {
     const error = await res.json();
+    console.warn("Yext API call failed!!!");
+    console.error({ error, reformattedData });
     return {
       headers: {
         "Content-Type": "application/json",

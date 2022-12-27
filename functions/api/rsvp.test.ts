@@ -9,7 +9,7 @@ Deno.test("Respond successfuly to request", async () => {
     "attending-2": 1,
     phone: "12155346876",
     email: "davish9@gmail.com",
-    note: "I'm so excited!",
+    note: "The deno test was successful!",
   };
 
   const request: APIRequest = {
