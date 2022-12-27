@@ -73,7 +73,7 @@ const RSVPForm = (props: { itinerary: Itinerary }) => {
 
     setTimeout(async () => {
       setSubmitting(false);
-      const res = await fetch("https://www.thedavishes.com/", {
+      const res = await fetch("https://www.thedavishes.com/api/rsvp", {
         method: "POST",
         body: JSON.stringify(parsedData),
       });
