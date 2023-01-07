@@ -1,5 +1,5 @@
 import "../index.css";
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   TemplateConfig,
   TransformProps,
@@ -25,7 +25,9 @@ import cx from "classnames";
 import Tilt from 'react-parallax-tilt';
 import { provideHeadless, SearchHeadlessProvider } from "@yext/search-headless-react";
 import LodgingMap from "../components/LodgingMap";
-// import ReactMarkdown from "react-markdown";
+import Modal from "../components/Modal";
+import Button from "../components/Button";
+import Markdown from "markdown-to-jsx";
 
 export const config: TemplateConfig = {
   stream: {
@@ -114,8 +116,41 @@ const SiteTemplate = (props: TemplateRenderProps) => {
     })
     throw e;
   }
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsModalOpen(true);
+    }
+      , 1000);
+  }, [])
+
+  let ReactMarkdown
+
   return (
     <Layout>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      >
+        <Header className="text-center">
+          Hello there!
+        </Header>
+        <P className="text-center">
+          Thanks for checking out the Davish wedding website. Feel free to take a look around.
+          Just a heads up, this website is still a work in progress, so some things may not be
+          fully functional yet.
+          If you have any questions, feel free to reach out to Max at davish9@gmail.com
+        </P>
+        <div className="my-4 flex flex-row">
+          <Button
+            className="mx-auto w-2/3"
+            onClick={() => setIsModalOpen(false)}>
+            Got it!
+          </Button>
+        </div>
+      </Modal>
       <Parallax pages={5.5} ref={parallaxRef}>
         <ParallaxLayer >
           <div
@@ -265,12 +300,9 @@ const SiteTemplate = (props: TemplateRenderProps) => {
 
                           >
                             <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-green-1100">
-                              {faq.answer}
-                              {/* Weird hack due to `document` being undefined */}
-                              {/* {ReactMarkdown &&
-                                <ReactMarkdown className="prose-sm list-disc list-outside">
-                                  {faq.answer}
-                                </ReactMarkdown>} */}
+                              <Markdown className="prose prose-sm text-green-1100">
+                                {faq.answer}
+                              </Markdown>
                             </Disclosure.Panel>
                           </Transition>
                         </>
