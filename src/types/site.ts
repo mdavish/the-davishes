@@ -53,6 +53,8 @@ export const itinerarySchema = z.array(eventSchema);
 export const siteSchema = z.object({
   name: z.string(),
   c_dominantPhoto: photoSchema,
+  c_secondPhoto: photoSchema,
+  c_thirdPhoto: photoSchema,
   c_ourStoryCopy: z.string(),
   c_ourStoryPhoto: photoSchema,
   c_faqs: z.array(faqSchema),

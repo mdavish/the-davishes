@@ -3,7 +3,7 @@ import Layout from "../components/Layout";
 import { GetPath, Template, TemplateRenderProps, TemplateConfig } from "@yext/pages/*";
 import { provideHeadless, SearchHeadlessProvider } from "@yext/search-headless-react";
 import RSVPForm from "../components/RSVPForm";
-import { itinerarySchema } from "../types/site";
+import { itinerarySchema, photoSchema } from "../types/site";
 import "../index.css";
 
 // This also includes the site config so you can fetch the itinerary
@@ -11,6 +11,7 @@ export const config: TemplateConfig = {
   stream: {
     $id: "rsvp-stream",
     fields: [
+      "c_dominantPhoto",
       "c_itinerary.name",
       "c_itinerary.description",
       "c_itinerary.c_eventPhoto",
@@ -43,8 +44,9 @@ const headless = provideHeadless({
 const RsvpTemplate: Template<TemplateRenderProps> = (props: TemplateRenderProps) => {
   const rawDocument = props.document;
   const itinerary = itinerarySchema.parse(rawDocument.c_itinerary);
+  const photo = photoSchema.parse(rawDocument.c_dominantPhoto);
   return (
-    <Layout>
+    <Layout bgPhoto={photo}>
       <SearchHeadlessProvider searcher={headless}>
         <RSVPForm itinerary={itinerary} />
       </SearchHeadlessProvider>

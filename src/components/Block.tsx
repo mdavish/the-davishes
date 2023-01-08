@@ -38,7 +38,7 @@ const Block = (props: { i: number, navId?: string, children: ReactNode }): JSX.E
     >
       <div ref={ref} className="grid items-center w-full h-full">
         <div className={cx(
-          "flex align-middle w-10/12 lg:w-3/4 h-full mx-auto my-auto transition-opacity duration-300 ease-in-out",
+          "flex align-middle w-10/12 h-full mx-auto my-auto transition-opacity duration-300 ease-in-out",
           i % 2 !== 0 ? "lg:flex-row-reverse" : "lg:flex-row",
           showing ? "opacity-100" : "opacity-0"
         )}>
