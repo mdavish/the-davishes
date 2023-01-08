@@ -28,6 +28,7 @@ import LodgingMap from "../components/LodgingMap";
 import Modal from "../components/Modal";
 import Button from "../components/Button";
 import Markdown from "markdown-to-jsx";
+// Import lighthouse SVG from public directory
 
 export const config: TemplateConfig = {
   stream: {
@@ -119,14 +120,12 @@ const SiteTemplate = (props: TemplateRenderProps) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setIsModalOpen(true);
-    }
-      , 1000);
-  }, [])
-
-  let ReactMarkdown
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setIsModalOpen(true);
+  //   }
+  //     , 1000);
+  // }, [])
 
   return (
     <Layout>
@@ -151,10 +150,16 @@ const SiteTemplate = (props: TemplateRenderProps) => {
           </Button>
         </div>
       </Modal>
-      <Parallax pages={5.5} ref={parallaxRef}>
-        <ParallaxLayer >
+      <Parallax
+        pages={5}
+        ref={parallaxRef}
+        config={{
+
+        }}
+      >
+        <ParallaxLayer className="absolute z-50" offset={0}>
           <div
-            className="flex flex-col justify-center h-full">
+            className="z-50 flex flex-col justify-center h-full">
             <FadeIn delay={250} >
               <div
                 className="text-center flex flex-col gap-y-10">
@@ -171,8 +176,30 @@ const SiteTemplate = (props: TemplateRenderProps) => {
             </FadeIn>
           </div>
         </ParallaxLayer>
+        <ParallaxLayer
+          className="absolute -z-20"
+          sticky={{ start: 0, end: 0.5 }}
+          speed={0.25}
+        >
+          <div className="w-full h-full absolute bottom-60 -right-20  opacity-30 select-none">
+            <Image image={site.c_dominantPhoto} />
+          </div>
+        </ParallaxLayer>
         <Block i={0}>
           <div className="h-full flex lg:flex-row flex-col gap-y-2 align-middle">
+            <div className="lg:p-8 my-auto">
+              <Header
+                className="text-center lg:text-left"
+                href="our-story"
+              >
+                Our Story
+              </Header>
+              <div className="">
+                <P>
+                  {site.c_ourStoryCopy}
+                </P>
+              </div>
+            </div>
             <div className="shrink-0 aspect-auto my-auto relative">
               <Tilt
                 glareEnable
@@ -185,17 +212,6 @@ const SiteTemplate = (props: TemplateRenderProps) => {
                   image={site.c_ourStoryPhoto}
                 />
               </Tilt>
-            </div>
-            <div className="lg:p-8 my-auto">
-              <Header
-                className="text-center lg:text-left"
-                href="our-story"
-              >
-                Our Story
-              </Header>
-              <P>
-                {site.c_ourStoryCopy}
-              </P>
             </div>
           </div>
         </Block>

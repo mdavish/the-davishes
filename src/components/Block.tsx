@@ -31,6 +31,7 @@ const Block = (props: { i: number, navId?: string, children: ReactNode }): JSX.E
 
   return (
     <ParallaxLayer
+      className="absolute z-10"
       key={i}
       offset={i + 1}
       speed={0.5}
