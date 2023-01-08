@@ -2,6 +2,7 @@ import React from "react";
 import Layout from "../components/Layout";
 import Header from "../components/Header";
 import P from "../components/P";
+import "../index.css";
 
 export const getPath = () => "404.html";
 

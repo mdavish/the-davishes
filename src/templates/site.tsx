@@ -168,9 +168,9 @@ const SiteTemplate = (props: TemplateRenderProps) => {
                 <h1 className="text-6xl lg:text-8xl text-green-1100 font-lobster">The Davishes</h1>
                 <h2 className="text-4xl lg:text-5xl font-light text-green-1100 font-lobsterTwo">8 July, 2023</h2>
                 <Link
-                  className="text-2xl lg:text-3xl text-green-1100 font-lobsterTwo bg-green-1000 hover:bg-green-1100 py-2 px-4 border border-white w-fit text-white rounded-xl no-underline"
+                  className="text-2xl lg:text-3xl text-green-1100 font-lobsterTwo bg-green-1000 hover:bg-green-1100 py-2 px-4 border border-white w-fit rounded-xl no-underline"
                   href="/rsvp">
-                  RSVP Now
+                  <span className="text-white">RSVP Now</span>
                 </Link>
                 <button
                   onClick={() => {

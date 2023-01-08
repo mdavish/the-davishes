@@ -41,14 +41,17 @@ export const Nav = (): JSX.Element => {
               key={i}
               className={cx(
                 "text-lg font-light text-green-1100 font-lobsterTwo transition-none delay-150 my-auto",
-                item.primary && "bg-green-1000 hover:bg-green-1100 py-0.5 px-4 rounded-xl border border-white text-white no-underline",
+                item.primary && "bg-green-1000 hover:bg-green-1100 py-0.5 px-4 rounded-xl border border-white  no-underline",
               )}
             >
               <Link
                 className={item.primary ? "no-underline" : ""}
                 href={item.href
                 } >
-                {item.name}
+                {/* Not sure why this is suddenyl necessary */}
+                <span className={item.primary ? "text-white" : ""}>
+                  {item.name}
+                </span>
               </Link>
             </h1>
           ))
