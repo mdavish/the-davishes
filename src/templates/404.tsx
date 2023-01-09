@@ -9,7 +9,7 @@ export const getPath = () => "404.html";
 const NotFoundPage = () => (
   <Layout>
     <div className="mx-auto my-auto text-center">
-      <Header>NOT FOUND</Header>
+      <Header>Not Found</Header>
       <P>
         You just hit a route that doesn&#39;t exist yet.
         The site is still under construction, so please check back later.

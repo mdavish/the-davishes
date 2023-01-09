@@ -2,6 +2,7 @@ import React from "react";
 import { ParallaxLayer } from "@react-spring/parallax";
 import type { Photo } from "../types/site";
 import { Image } from "@yext/pages/components";
+import cx from "classnames";
 
 interface ImageBlockProps {
   photo: Photo;
@@ -10,16 +11,20 @@ interface ImageBlockProps {
     end: number;
   }
   speed?: number;
+  className?: string;
 }
 
-export default function ImageBlock({ photo, sticky, speed = 0.25 }: ImageBlockProps) {
+export default function ImageBlock({ photo, sticky, speed = 0.25, className }: ImageBlockProps) {
   return (
     <ParallaxLayer
       className="absolute -z-20"
       sticky={sticky}
       speed={speed}
     >
-      <div className="w-full h-full absolute bottom-60 -right-36  opacity-30 select-none">
+      <div className={cx(
+        "w-full h-full absolute -bottom-10 -right-36 opacity-30 select-none",
+        className
+      )}>
         <Image image={photo} />
       </div>
     </ParallaxLayer>

@@ -3,7 +3,7 @@ import { ImGithub } from "react-icons/im";
 
 const Footer = (): JSX.Element => {
   return (
-    <footer className="absolute bottom-0 z-50 w-full hidden lg:flex flex-row bg-beige-100 bg-gradient-to-t from-beige-100 to-beige-100/50 border-t border-green-1100/5">
+    <footer className="absolute bottom-0 z-40 w-full hidden lg:flex flex-row bg-beige-100 bg-gradient-to-t from-beige-100 to-beige-100/50 border-t border-green-1100/5">
       <div className="my-3 mx-auto text-sm text-beige-900/70 flex flex-row gap-x-4">
         <div>
           <a
