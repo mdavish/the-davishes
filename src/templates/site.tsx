@@ -135,11 +135,11 @@ const SiteTemplate = (props: TemplateRenderProps) => {
   return (
     <>
       <div className={cx(
-        "fixed z-50 bottom-14 right-10",
+        "fixed z-50 bottom-6 right-4 lg:bottom-14 lg:right-10",
         showChat && "h-auto"
       )}>
         <Transition
-          className="fixed bottom-40 right-10 w-96 h-1/2  bg-white rounded-xl shadow-xl overflow-hidden"
+          className="fixed bottom-28 right-4 w-80 lg:w-96 h-2/3 lg:h-1/2  bg-white rounded-xl shadow-xl overflow-hidden"
           as="div"
           enter="transition-opacity duration-300"
           enterFrom="opacity-0"
@@ -155,12 +155,12 @@ const SiteTemplate = (props: TemplateRenderProps) => {
         </Transition>
         <button
           onClick={() => setShowChat(!showChat)}
-          className="border border-white shadow-xl hover:shadow-2xl bottom-10 right-10 w-20 h-20 rounded-full bg-gradient-to-br from-green-800 to-green-1100 hover:-translate-y-2 transition-all duration-150">
+          className="border border-white shadow-xl hover:shadow-2xl bottom-10 right-10 w-12 h-12 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-green-800 to-green-1100 hover:-translate-y-2 transition-all duration-150">
           <div className="flex flex-col justify-center items-center h-full w-full text-white">
             {
               showChat ?
-                <IoCaretDownOutline className="text-3xl text-white" /> :
-                <IoChatbubblesSharp className="text-3xl text-white" />
+                <IoCaretDownOutline className="text-xl lg:text-3xl text-white" /> :
+                <IoChatbubblesSharp className="text-xl lg:text-3xl text-white" />
             }
           </div>
         </button>
@@ -199,14 +199,15 @@ const SiteTemplate = (props: TemplateRenderProps) => {
               <FadeIn delay={250} >
                 <div
                   className="mx-auto w-3/4 text-left flex flex-col gap-y-10 pb-28">
-                  <h1 className="text-6xl lg:text-8xl text-green-1100 font-lobster">The Davishes</h1>
-                  <h2 className="text-4xl lg:text-5xl font-light text-green-1100 font-lobsterTwo">8 July, 2023</h2>
+                  <h1 className="text-center lg:text-left text-6xl lg:text-8xl text-green-1100 font-lobster">The Davishes</h1>
+                  <h2 className="text-center lg:text-left text-4xl lg:text-5xl font-light text-green-1100 font-lobsterTwo">8 July, 2023</h2>
                   <Link
-                    className="text-2xl lg:text-3xl text-green-1100 font-lobsterTwo bg-green-1000 hover:bg-green-1100 py-2 px-4 border border-white w-fit rounded-xl no-underline"
+                    className="mx-auto lg:mx-0 text-2xl lg:text-3xl text-green-1100 font-lobsterTwo bg-green-1000 hover:bg-green-1100 py-2 px-4 border border-white w-fit rounded-xl no-underline"
                     href="/rsvp">
                     <span className="text-white">RSVP Now</span>
                   </Link>
                   <button
+                    className="mx-auto lg:mx-0"
                     onClick={() => {
                       parallaxRef.current?.scrollTo(1);
                     }}
@@ -252,13 +253,13 @@ const SiteTemplate = (props: TemplateRenderProps) => {
           </Block>
           <Block i={1}>
             <div className="w-full flex flex-row">
-              <div className="">
-                <Header className="lg:mx-auto" href="itinerary">
+              <div className="mx-auto lg:mx-0">
+                <Header className="text-center lg:mx-auto" href="itinerary">
                   Itinerary
                 </Header>
               </div>
             </div>
-            <div className="flex flex-col gap-y-10 w-2/3">
+            <div className="flex flex-col gap-y-10 w-full lg:w-2/3">
               {
                 site.c_itinerary.map((event, i) => {
                   const eventLocation = event.c_eventLocation[0];
@@ -318,7 +319,7 @@ const SiteTemplate = (props: TemplateRenderProps) => {
               <div>
                 <Header
                   href="faq"
-                  className="text-left">
+                  className="text-center lg:text-left">
                   Frequently Asked Questions
                 </Header>
               </div>

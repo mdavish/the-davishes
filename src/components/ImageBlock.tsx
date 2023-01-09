@@ -22,9 +22,8 @@ export default function ImageBlock({ photo, sticky, speed = 0.25, className }: I
       speed={speed}
     >
       <div className={cx(
-        "w-full h-full absolute -bottom-10 -right-36 opacity-30 select-none",
-        className
-      )}>
+        "w-full h-full absolute lg:-bottom-60 lg:-right-36 opacity-30 select-none",
+        className)}>
         <Image image={photo} />
       </div>
     </ParallaxLayer>
