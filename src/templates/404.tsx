@@ -4,7 +4,8 @@ import Header from "../components/Header";
 import P from "../components/P";
 import "../index.css";
 
-export const getPath = () => "404.html";
+// Temporarily removing to test if this interferes with the API
+// export const getPath = () => "404.html";
 
 const NotFoundPage = () => (
   <Layout>
