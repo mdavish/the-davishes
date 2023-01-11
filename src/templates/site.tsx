@@ -139,7 +139,7 @@ const SiteTemplate = (props: TemplateRenderProps) => {
         showChat && "h-auto"
       )}>
         <Transition
-          className="fixed bottom-28 right-4 w-80 lg:w-96 h-2/3 lg:h-1/2  bg-white rounded-xl shadow-xl overflow-hidden"
+          className="fixed right-4 bottom-24 lg:bottom-40 lg:right-10 w-80 lg:w-96 h-2/3 lg:h-1/2  bg-white rounded-xl shadow-xl overflow-hidden"
           as="div"
           enter="transition-opacity duration-300"
           enterFrom="opacity-0"
@@ -218,11 +218,11 @@ const SiteTemplate = (props: TemplateRenderProps) => {
               </FadeIn>
             </div>
           </ParallaxLayer>
-          <ImageBlock sticky={{ start: 0, end: 0.5 }} className="-bottom-20" photo={site.c_dominantPhoto} />
-          <ImageBlock sticky={{ start: 1.7, end: 2.9 }} photo={site.c_secondPhoto} />
-          <ImageBlock sticky={{ start: 3.9, end: 5 }} photo={site.c_thirdPhoto} />
+          <ImageBlock sticky={{ start: 0, end: 0.5 }} className="lg:bottom-48 lg:-right-64" photo={site.c_dominantPhoto} />
+          <ImageBlock sticky={{ start: 1.7, end: 2.9 }} className="lg:bottom-64 lg:-right-64" photo={site.c_secondPhoto} />
+          <ImageBlock sticky={{ start: 3.9, end: 5 }} className="lg:bottom-64 lg:-right-64" photo={site.c_thirdPhoto} />
           <Block i={0}>
-            <div className="h-full flex lg:flex-row flex-col gap-y-2 align-middle">
+            <div className="h-full flex lg:flex-row-reverse flex-col gap-y-2 align-middle max-w-7xl">
               <div className="lg:p-8 my-auto">
                 <Header
                   className="text-center lg:text-left"
@@ -323,7 +323,7 @@ const SiteTemplate = (props: TemplateRenderProps) => {
                   Frequently Asked Questions
                 </Header>
               </div>
-              <div className="flex flex-col gap-y-4 w-full lg:w-3/5 max-w-xl">
+              <div className="flex flex-col gap-y-4 w-full max-w-xl">
                 {
                   site.c_faqs.map((faq, i) => (
                     <div key={i} className="flex flex-col">
