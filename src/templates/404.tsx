@@ -6,6 +6,7 @@ import "../index.css";
 
 // Temporarily removing to test if this interferes with the API
 // export const getPath = () => "404.html";
+export const getPath = () => "foo.html";
 
 const NotFoundPage = () => (
   <Layout>
