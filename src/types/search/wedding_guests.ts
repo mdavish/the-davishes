@@ -20,6 +20,13 @@ export interface EntityReference {
 	name: string,
 }
 
+export interface C_plusOneDetails {
+	firstName: string,
+	lastName: string,
+	email?: string,
+	phone?: string,
+}
+
 export enum C_rSVPStatus {
 	ATTENDING = "Attending",
 	NOT_ATTENDING = "Not Attending",
@@ -50,8 +57,13 @@ export default interface Ce_weddingGuest {
 	cityCoordinate?: Coordinate,
 	c_guestEmail?: string,
 	c_hasPlusOne?: boolean,
+	c_intents?: string[],
+	c_nAttendingRehearsalDinner?: number,
+	c_nAttendingWedding?: number,
+	c_nAttendingWelcomeDrinks?: number,
 	c_notes?: string,
 	c_plusOne?: EntityReference[],
+	c_plusOneDetails?: C_plusOneDetails,
 	c_rSVPStatus?: C_rSVPStatus,
 	c_side?: C_side,
 	displayCoordinate?: Coordinate,

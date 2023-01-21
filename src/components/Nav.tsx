@@ -20,7 +20,7 @@ const navItems: NavItem[] = [
   },
   {
     name: "Registry",
-    href: "/registry"
+    href: "https://overthemoon.com/apps/registry/goldschmid-davish-f556"
   }
 ];
 

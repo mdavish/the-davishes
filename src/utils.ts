@@ -5,3 +5,9 @@ export const addressToUrlString = (address: Address) => {
     address?.region ?? ""
   } ${address.postalCode}`;
 };
+
+export const prettyAddress = (address: Address) => {
+  return `${address.line1} ${address.city} ${address?.region ?? ""} ${
+    address.postalCode
+  }`;
+};

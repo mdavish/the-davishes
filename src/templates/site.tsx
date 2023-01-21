@@ -10,9 +10,8 @@ import {
 } from "@yext/pages/*";
 import { Site, siteSchema } from "../types/site";
 import FadeIn from "react-fade-in";
-import { IoChevronDownCircle, IoLocationOutline } from "react-icons/io5";
+import { IoChevronDownCircle } from "react-icons/io5";
 import { Parallax, ParallaxLayer, IParallax } from "@react-spring/parallax";
-import { addressToUrlString } from "../utils";
 import Layout from "../components/Layout";
 import Header from "../components/Header";
 import Block from "../components/Block";
@@ -27,8 +26,8 @@ import { provideHeadless, SearchHeadlessProvider } from "@yext/search-headless-r
 import LodgingMap from "../components/LodgingMap";
 import Modal from "../components/Modal";
 import Button from "../components/Button";
+import LocationLink from "../components/LocationLink";
 import Markdown from "markdown-to-jsx";
-import ImageBlock from "../components/ImageBlock";
 import { IoChatbubblesSharp, IoCaretDownOutline } from "react-icons/io5";
 
 export const config: TemplateConfig = {
@@ -139,7 +138,7 @@ const SiteTemplate = (props: TemplateRenderProps) => {
         showChat && "h-auto"
       )}>
         <Transition
-          className="fixed right-4 bottom-24 lg:bottom-40 lg:right-10 w-80 lg:w-96 h-2/3 lg:h-1/2  bg-white rounded-xl shadow-xl overflow-hidden"
+          className="fixed right-4 bottom-24 lg:bottom-40 lg:right-10 w-80 lg:w-96 h-3/4 lg:h-2/3 xl:1/2  bg-white rounded-xl shadow-xl overflow-hidden"
           as="div"
           enter="transition-opacity duration-300"
           enterFrom="opacity-0"
@@ -263,7 +262,6 @@ const SiteTemplate = (props: TemplateRenderProps) => {
               {
                 site.c_itinerary.map((event, i) => {
                   const eventLocation = event.c_eventLocation[0];
-                  const addressUrlString = addressToUrlString(eventLocation.address);
                   return (
                     <div key={i} className="flex flex-col lg:flex-row gap-y-4 lg:gap-y-0 gap-x-4">
                       <div className="flex flex-row gap-x-2 lg:gap-x-10">
@@ -285,14 +283,7 @@ const SiteTemplate = (props: TemplateRenderProps) => {
                             <EventLink event={event} />
                           </div >
                           <div className="text-sm text-green-1100 flex flex-row align-baseline">
-                            <Link
-                              href={`https://www.google.com/maps/search/?api=1&query=${addressUrlString}`}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              <IoLocationOutline className="inline-block mr-2 mb-1 text-green-1100" />
-                              {eventLocation?.name ?? "TBD"}
-                            </Link>
+                            <LocationLink text={eventLocation.name} address={eventLocation.address} />
                           </div>
                           <P className="max-h-48 text-ellipsis overflow-hidden">
                             {event.description}

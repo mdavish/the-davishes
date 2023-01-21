@@ -28,6 +28,7 @@ export default interface Ce_weddingEvent {
 	name: string,
 	c_eventLocation?: EntityReference[],
 	c_eventPhoto?: Image,
+	c_intents?: string[],
 	c_recommendedAttire?: string,
 	id: string,
 }

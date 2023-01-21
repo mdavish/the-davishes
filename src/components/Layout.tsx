@@ -16,10 +16,10 @@ const Layout = ({ children, bgPhoto }: LayoutProps): JSX.Element => {
       //   backgroundPosition: "bottom right",
       //   backgroundSize: "90%"
       // }}
-      className="bg-no-repeat bg-center h-screen relative"
+      className="bg-no-repeat bg-center h-screen relative overflow-auto"
     >
       {bgPhoto &&
-        <div className="w-full h-full absolute select-none -bottom-36 -right-48">
+        <div className="w-full h-full absolute select-none -bottom-36 -right-48 overflow-hidden">
           <Image className="absolute w-full h-full" image={bgPhoto} />
         </div>}
       <div
