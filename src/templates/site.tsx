@@ -165,7 +165,7 @@ const SiteTemplate = (props: TemplateRenderProps) => {
           </div>
         </button>
       </div>
-      <Layout>
+      <Layout bgPhoto={site.c_dominantPhoto}>
         <Modal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
@@ -218,9 +218,9 @@ const SiteTemplate = (props: TemplateRenderProps) => {
               </FadeIn>
             </div>
           </ParallaxLayer>
-          <ImageBlock sticky={{ start: 0, end: 0.5 }} className="lg:bottom-48 lg:-right-64" photo={site.c_dominantPhoto} />
-          <ImageBlock sticky={{ start: 1.7, end: 2.9 }} className="lg:bottom-64 lg:-right-64" photo={site.c_secondPhoto} />
-          <ImageBlock sticky={{ start: 3.9, end: 5 }} className="lg:bottom-64 lg:-right-64" photo={site.c_thirdPhoto} />
+          {/* <ImageBlock sticky={{ start: 0, end: 0.5 }} className="lg:bottom-48 lg:-right-64" photo={site.c_dominantPhoto} /> */}
+          {/* <ImageBlock sticky={{ start: 1.7, end: 2.9 }} className="lg:bottom-64 lg:-right-64" photo={site.c_secondPhoto} /> */}
+          {/* <ImageBlock sticky={{ start: 3.9, end: 5 }} className="lg:bottom-64 lg:-right-64" photo={site.c_thirdPhoto} /> */}
           <Block i={0}>
             <div className="h-full flex lg:flex-row-reverse flex-col gap-y-2 align-middle max-w-7xl">
               <div className="lg:p-8 my-auto">
