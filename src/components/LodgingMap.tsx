@@ -8,6 +8,7 @@ import P from "./P";
 import LocationLink from "./LocationLink";
 import { Link } from "@yext/pages/components";
 import { FaAirbnb } from "react-icons/fa";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 const LodgingMap = (): JSX.Element => {
 
