@@ -149,7 +149,7 @@ const SiteTemplate = (props: TemplateRenderProps) => {
           show={showChat}>
           <iframe
             className="w-full h-full"
-            src="https://yext-chatbot-v2-production.up.railway.app/bots/6"
+            src="https://yext-chatbot-v2-dev.up.railway.app/bots/2"
           />
         </Transition>
         <button
