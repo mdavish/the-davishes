@@ -133,37 +133,7 @@ const SiteTemplate = (props: TemplateRenderProps) => {
 
   return (
     <>
-      <div className={cx(
-        "fixed z-50 bottom-6 right-4 lg:bottom-14 lg:right-10",
-        showChat && "h-auto"
-      )}>
-        <Transition
-          className="fixed right-4 bottom-24 lg:bottom-40 lg:right-10 w-80 lg:w-96 h-3/4 lg:h-2/3 xl:1/2  bg-white rounded-xl shadow-xl overflow-hidden"
-          as="div"
-          enter="transition-opacity duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="transition-opacity duration-300"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-          show={showChat}>
-          <iframe
-            className="w-full h-full"
-            src="https://yext-chatbot-v2-dev.up.railway.app/bots/2"
-          />
-        </Transition>
-        <button
-          onClick={() => setShowChat(!showChat)}
-          className="border border-white shadow-xl hover:shadow-2xl bottom-10 right-10 w-12 h-12 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-green-800 to-green-1100 hover:-translate-y-2 transition-all duration-150">
-          <div className="flex flex-col justify-center items-center h-full w-full text-white">
-            {
-              showChat ?
-                <IoCaretDownOutline className="text-xl lg:text-3xl text-white" /> :
-                <IoChatbubblesSharp className="text-xl lg:text-3xl text-white" />
-            }
-          </div>
-        </button>
-      </div>
+      {/* <ChatBot cx={cx} showChat={showChat} setShowChat={setShowChat} /> */}
       <Layout bgPhoto={site.c_dominantPhoto}>
         <Modal
           isOpen={isModalOpen}
@@ -369,4 +339,17 @@ const SiteTemplate = (props: TemplateRenderProps) => {
 };
 
 
+
+function undefined({ cx, showChat, setShowChat }) {
+  return (<div className={cx("fixed z-50 bottom-6 right-4 lg:bottom-14 lg:right-10", showChat && "h-auto")}>
+    <Transition className="fixed right-4 bottom-24 lg:bottom-40 lg:right-10 w-80 lg:w-96 h-3/4 lg:h-2/3 xl:1/2  bg-white rounded-xl shadow-xl overflow-hidden" as="div" enter="transition-opacity duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="transition-opacity duration-300" leaveFrom="opacity-100" leaveTo="opacity-0" show={showChat}>
+      <iframe className="w-full h-full" src="https://yext-chatbot-v2-dev.up.railway.app/bots/2" />
+    </Transition>
+    <button onClick={() => setShowChat(!showChat)} className="border border-white shadow-xl hover:shadow-2xl bottom-10 right-10 w-12 h-12 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-green-800 to-green-1100 hover:-translate-y-2 transition-all duration-150">
+      <div className="flex flex-col justify-center items-center h-full w-full text-white">
+        {showChat ? <IoCaretDownOutline className="text-xl lg:text-3xl text-white" /> : <IoChatbubblesSharp className="text-xl lg:text-3xl text-white" />}
+      </div>
+    </button>
+  </div>);
+}
 export default SiteTemplate;
