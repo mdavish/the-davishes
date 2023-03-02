@@ -19,13 +19,13 @@ const MapPin: PinComponent<Location> = ({ result }) => {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div className='absolute z-50 bottom-12 -inset-x-24 w-60 h-24 bg-white rounded-md shadow-sm shadow-stone-400/5 p-4 gap-5 align-middle'>
+        <div className='absolute z-50 bottom-12 -inset-x-24 w-72 h-24 bg-white rounded-md shadow-sm shadow-stone-400/5 p-4 gap-5 align-middle'>
           <div className='my-auto mx-auto flex flex-row'>
             <div className='my-auto'>
-              <h3 className='text-lg font-normal'>
+              <h3 className='text-lg font-normal font-lobsterTwo text-green-1100'>
                 {result.rawData.name}
               </h3>
-              <div className='text-stone-500 font-sans'>
+              <div className='text-stone-700 font-sans'>
                 <p className='text-xs'>
                   {address?.line1}, {address?.line2}
                 </p>
@@ -40,7 +40,7 @@ const MapPin: PinComponent<Location> = ({ result }) => {
       <svg
         onMouseEnter={() => setShowCard(true)}
         onMouseLeave={() => setShowCard(false)}
-        className='z-40 fill-slate-800 hover:fill-slate-500 stroke-2 stroke-white'
+        className='z-40 fill-green-1000 hover:fill-green-1100 stroke-2 stroke-white'
         width="33" height="42"
         viewBox="0 0 30 38"
         fill="none"

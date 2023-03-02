@@ -14,8 +14,10 @@ const Layout = ({ children, bgPhoto }: LayoutProps): JSX.Element => {
     <div className="bg-no-repeat bg-center h-screen relative overflow-auto">
       <ChatBot configId="davish_wedding" />
       {bgPhoto &&
-        <div className="w-full h-full absolute select-none -bottom-36 -right-48 overflow-hidden">
-          <Image className="absolute w-full h-full" image={bgPhoto} />
+        <div className="w-full h-full absolute overflow-hidden">
+          <div className="w-full h-full select-none absolute lg:-bottom-36 lg:-right-48">
+            <Image className="absolute w-full h-full" image={bgPhoto} />
+          </div>
         </div>
       }
       <div
