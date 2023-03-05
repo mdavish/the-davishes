@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useCallback, useMemo } from "react";
+import type { SearchParameterField } from "@yext/search-headless-react";
 import { FilterSearch } from "@yext/search-ui-react";
-import { useSearchActions } from "@yext/search-headless-react";
 import { useForm } from "react-hook-form";
 import { weddingGuestAPIResponseSchema, WeddingGuest, Itinerary } from "../types/site";
 import { ImSpinner2 } from "react-icons/im";
@@ -50,8 +50,10 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-const RSVPForm = (props: { itinerary: Itinerary }) => {
-  const { itinerary } = props;
+
+const RSVPForm = ({ itinerary }: { itinerary: Itinerary }) => {
+  const { register, handleSubmit } = useForm();
+
   const [selectedGuest, setSelectedGuest] = useState<WeddingGuest | undefined>(undefined);
   // This is for loading the person's data
   const [loading, setLoading] = useState(false);
@@ -60,11 +62,18 @@ const RSVPForm = (props: { itinerary: Itinerary }) => {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const { register, handleSubmit } = useForm();
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-  const onSubmit = async (data: any) => {
+  const filterSearchFields = useMemo<Omit<SearchParameterField, "fetchEntities">[]>(() => [
+    {
+      entityType: "ce_weddingGuest",
+      fieldApiName: "name",
+    },
+    // TODO Make plus one name searchable
+  ], []);
+
+  const onSubmit = useCallback(async (data: any) => {
     setSubmitting(true);
 
     let parsedData: FormData;
@@ -97,16 +106,10 @@ const RSVPForm = (props: { itinerary: Itinerary }) => {
       const data = await res.json();
       console.log({ res, data });
       setSubmitted(true);
-      // window.alert("RSVP submitted! Thank you for your response.)");
       setShowSuccessModal(true);
-    }, 1000);
+    }, 500);
 
-  };
-
-  const searchActions = useSearchActions();
-  useEffect(() => {
-    searchActions.setVertical("wedding_guests");
-  }, []);
+  }, [selectedGuest]);
 
   return (
     <>
@@ -135,38 +138,34 @@ const RSVPForm = (props: { itinerary: Itinerary }) => {
           <p className="text-center text-green-1100">
             Enter your name to RSVP.
           </p>
-          {(!selectedGuest) && <div className="my-4">
-            <FilterSearch
-              placeholder="Search for your name..."
-              customCssClasses={{
-                filterSearchContainer: "w-full mx-auto my-0 shadow-sm",
-                inputElement: "px-3 py-3",
-              }}
-              sectioned={false}
-              searchFields={[
-                {
-                  entityType: "ce_weddingGuest",
-                  fieldApiName: "name",
-                }
-              ]}
-              onSelect={({ newDisplayName, setCurrentFilter, newFilter }) => {
-                setLoading(true);
-                setCurrentFilter(newFilter);
-                console.log(newDisplayName, newFilter)
-                getPersonByName(newDisplayName)
-                  .then((guest) => {
-                    setSelectedGuest(guest);
-                    setLoading(false);
-                    setError(false);
-                  })
-                  .catch((err) => {
-                    console.error(err);
-                    setError(true);
-                    setLoading(false);
-                  })
-              }}
-            />
-          </div>}
+          {(!selectedGuest) &&
+            <div className="my-4">
+              <FilterSearch
+                placeholder="Search for your name..."
+                customCssClasses={{
+                  filterSearchContainer: "w-full mx-auto my-0 shadow-sm",
+                  inputElement: "px-3 py-3",
+                }}
+                sectioned={false}
+                searchFields={filterSearchFields}
+                onSelect={({ newDisplayName, setCurrentFilter, newFilter }) => {
+                  setLoading(true);
+                  setCurrentFilter(newFilter);
+                  console.log(newDisplayName, newFilter)
+                  getPersonByName(newDisplayName)
+                    .then((guest) => {
+                      setSelectedGuest(guest);
+                      setLoading(false);
+                      setError(false);
+                    })
+                    .catch((err) => {
+                      console.error(err);
+                      setError(true);
+                      setLoading(false);
+                    })
+                }}
+              />
+            </div>}
           <div>
             {
               loading &&

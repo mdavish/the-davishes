@@ -39,6 +39,7 @@ const headless = provideHeadless({
   locale: "en",
   experienceKey: "davish-goldschmid-wedding",
   experienceVersion: "PRODUCTION",
+  verticalKey: "wedding_guests",
 });
 
 const RsvpTemplate: Template<TemplateRenderProps> = (props: TemplateRenderProps) => {
@@ -47,7 +48,7 @@ const RsvpTemplate: Template<TemplateRenderProps> = (props: TemplateRenderProps)
   const photo = photoSchema.parse(rawDocument.c_dominantPhoto);
   return (
     <Layout bgPhoto={photo}>
-      <SearchHeadlessProvider searcher={headless}>
+      <SearchHeadlessProvider searcher={headless} >
         <RSVPForm itinerary={itinerary} />
       </SearchHeadlessProvider>
     </Layout>
