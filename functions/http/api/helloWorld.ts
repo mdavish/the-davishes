@@ -1,5 +1,3 @@
-import * as twilio from "https://deno.land/x/twilio@0.1.1/Twilio.ts";
-
 interface FunctionArgument {
   queryParams: { [key: string]: string };
   pathParams: { [key: string]: string };
@@ -34,7 +32,7 @@ interface ReturnValue {
   headers: object;
 }
 
-export default function helloWorld(request: FunctionArgument): ReturnValue {
+export default function main(request: FunctionArgument): ReturnValue {
   const { pathParams, queryParams, site } = request;
 
   return {
