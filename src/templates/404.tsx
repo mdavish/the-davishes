@@ -3,8 +3,16 @@ import Layout from "../components/Layout";
 import Header from "../components/Header";
 import P from "../components/P";
 import "../index.css";
+import { GetHeadConfig, TemplateRenderProps } from "@yext/pages";
 
 export const getPath = () => "404.html";
+
+export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = () => ({
+  title: "The Davish Wedding Website",
+  lang: "en",
+  charset: "utf-8",
+  viewport: "width=device-width, initial-scale=1",
+});
 
 const NotFoundPage = () => (
   <Layout>

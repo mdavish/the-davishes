@@ -28,7 +28,6 @@ import Modal from "../components/Modal";
 import Button from "../components/Button";
 import LocationLink from "../components/LocationLink";
 import Markdown from "markdown-to-jsx";
-import { IoChatbubblesSharp, IoCaretDownOutline } from "react-icons/io5";
 
 export const config: TemplateConfig = {
   stream: {
@@ -77,6 +76,7 @@ export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = () => ({
   title: "The Davish Wedding Website",
   lang: "en",
   charset: "utf-8",
+  viewport: "width=device-width, initial-scale=1",
 });
 
 const headless = provideHeadless({
@@ -122,18 +122,8 @@ const SiteTemplate = (props: TemplateRenderProps) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setIsModalOpen(true);
-  //   }
-  //     , 1000);
-  // }, [])
-
-  const [showChat, setShowChat] = useState(false);
-
   return (
     <>
-      {/* <ChatBot cx={cx} showChat={showChat} setShowChat={setShowChat} /> */}
       <Layout bgPhoto={site.c_dominantPhoto}>
         <Modal
           isOpen={isModalOpen}

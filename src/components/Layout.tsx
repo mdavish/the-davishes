@@ -3,6 +3,7 @@ import Nav from "./Nav";
 import type { Photo } from "../types/site";
 import { Image } from "@yext/pages/components";
 import { ChatBot } from "./ChatBot";
+import "../index.css";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,7 +13,7 @@ interface LayoutProps {
 const Layout = ({ children, bgPhoto }: LayoutProps): JSX.Element => {
   return (
     <div className="bg-no-repeat bg-center h-screen relative overflow-auto">
-      <ChatBot configId="davish_wedding" />
+      <ChatBot configId="davish-wedding-v2" />
       {bgPhoto &&
         <div className="w-full h-full absolute overflow-hidden">
           <div className="w-full h-full select-none absolute lg:-bottom-36 lg:-right-48">

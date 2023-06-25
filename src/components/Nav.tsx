@@ -17,8 +17,8 @@ const navItems: NavItem[] = [
     primary: true
   },
   {
-    name: "Recs",
-    href: "/recommendations"
+    name: "Seating",
+    href: "/rehearsal"
   },
   {
     name: "Registry",

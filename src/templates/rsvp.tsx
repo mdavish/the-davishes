@@ -1,6 +1,6 @@
 import React from "react";
 import Layout from "../components/Layout";
-import { GetPath, Template, TemplateRenderProps, TemplateConfig } from "@yext/pages/*";
+import { GetPath, Template, TemplateRenderProps, TemplateConfig, GetHeadConfig } from "@yext/pages";
 import { provideHeadless, SearchHeadlessProvider } from "@yext/search-headless-react";
 import RSVPForm from "../components/RSVPForm";
 import { itinerarySchema, photoSchema } from "../types/site";
@@ -40,6 +40,13 @@ const headless = provideHeadless({
   experienceKey: "davish-goldschmid-wedding",
   experienceVersion: "PRODUCTION",
   verticalKey: "wedding_guests",
+});
+
+export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = () => ({
+  title: "The Davish Wedding Website",
+  lang: "en",
+  charset: "utf-8",
+  viewport: "width=device-width, initial-scale=1",
 });
 
 const RsvpTemplate: Template<TemplateRenderProps> = (props: TemplateRenderProps) => {
