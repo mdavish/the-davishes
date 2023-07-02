@@ -9,7 +9,7 @@ export const seats: Array<string[]> = [
   ["Connor", "Jayla", "Mackenzie", "Annie", "Reid", "Mac", "Madelyn", "Ross", "Zach"],
   ["Anne", "Kathy", "Greg", "Wendy", "Sheryl", "Kent", "Helene", "Ronnie", "Gina", "Tom", "Nancy"],
   ["Lucas", "Brenna", "Stephanie", "George", "Luis", "Xana", "Cuca", "David"],
-  ["Patrick", "Tony", "Michelle", "Deb", "Jon", "Mark", "Nancy", "Steve", "Peggy"],
+  ["Patrick", "Tony", "Michelle", "Deb", "John", "Mark", "Nancy", "Steve", "Peggy"],
   ["Dennis", "Stacey", "Sondra", "Josh", "Santiago", "Michelle", "Leo", "Dominque", "Andrew"],
   ["Francesca", "Gavin", "Pressler", "Coleman", "Trey", "Walker", "Kate", "Frank", "Mike", "Jon"],
   ["Max", "Tanja", "Colin", "Alex", "Josh", "Ed", "Romy", "Christian", "Kim", "Seth"],
