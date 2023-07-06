@@ -5,15 +5,15 @@ import { GetPath, TemplateRenderProps, TemplateConfig, GetHeadConfig } from "@ye
 
 export const seats: Array<string[]> = [
   ["Ashley", "Max", "Nick", "Sam", "Natalie", "Jake", "Peter", "Allison", "Michaela", "Gio"],
-  ["Martin", "Anouk", "Armando", "Cecile", "Antoine", "Andrea", "Steve", "Daniel"],
-  ["Connor", "Jayla", "Mackenzie", "Annie", "Reid", "Mac", "Madelyn", "Ross", "Zach"],
-  ["Anne", "Kathy", "Greg", "Wendy", "Sheryl", "Kent", "Helene", "Ronnie", "Gina", "Tom", "Nancy"],
-  ["Lucas", "Brenna", "Stephanie", "George", "Luis", "Xana", "Cuca", "David"],
+  ["Martin", "Anouk", "Armando", "Cecile", "Antoine", "Andrea", "Steve", "Daniel", "Nicole", "David"],
+  ["Dennis", "Stacey", "Sondra", "Josh", "Santiago", "Connor", "Jayla", "Mackenzie", "Reid", "Annie"],
+  ["Anne", "Nancy", "Kathy", "Greg", "Wendy", "Sheryl", "Kent", "Helene", "Ronnie", "Gina", "Tom"],
+  ["Lucas", "Brenna", "Stephanie", "George", "Luis", "Xana", "Michelle", "Leo", "Dominque", "Andrew"],
   ["Patrick", "Tony", "Michelle", "Deb", "John", "Mark", "Nancy", "Steve", "Peggy"],
-  ["Dennis", "Stacey", "Sondra", "Josh", "Santiago", "Michelle", "Leo", "Dominque", "Andrew"],
-  ["Francesca", "Gavin", "Pressler", "Coleman", "Trey", "Walker", "Kate", "Frank", "Mike", "Jon"],
-  ["Max", "Tanja", "Colin", "Alex", "Josh", "Ed", "Romy", "Christian", "Kim", "Seth"],
-  ["Colby", "Matt", "Ariana", "Jeff", "Ali", "Joey", "Morgan", "Tommy"]
+  ["Mac", "Madelyn", "Ross", "Zach", "Mike", "Jon", "Allie", "Alex", "Sam", "Jen", "Willem"],
+  ["Trey", "Walker", "Kate", "Frank", "Shayna", "Cole", "Francesca", "Gavin", "Julia", "Coleman"],
+  ["Max", "Tanja", "Colin", "Alex", "Ed", "Romy", "Christian", "Kim", "Seth"],
+  ["Colby", "Matt", "Ariana", "Jeff", "Ali", "Joey", "Amanda","Sicco", "Morgan", "Tommy"]
 ];
 
 
